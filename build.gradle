@@ -4,6 +4,10 @@ buildscript {
         mavenCentral()
         google()
     }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    }
 }
 
 subprojects {
@@ -11,5 +15,12 @@ subprojects {
         mavenLocal()
         mavenCentral()
         google()
+    }
+
+    apply plugin: 'kotlin'
+
+    dependencies {
+        compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+        compile "org.jetbrains.kotlin:kotlin-stdlib"
     }
 }
