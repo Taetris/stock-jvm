@@ -1,9 +1,12 @@
-apply plugin: 'java'
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        google()
+    }
+}
 
-sourceCompatibility = 1.10
-targetCompatibility = 1.10
-
-allprojects {
+subprojects {
     repositories {
         mavenLocal()
         mavenCentral()
