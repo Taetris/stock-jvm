@@ -1,0 +1,12 @@
+apply plugin: 'java'
+
+sourceCompatibility = 1.10
+targetCompatibility = 1.10
+
+allprojects {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        google()
+    }
+}

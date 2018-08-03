@@ -2,7 +2,7 @@
 .idea/
 *.iml
 *.iws
-*/build
+build
 .gradle/
 
 # Compiled class file
