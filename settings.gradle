@@ -1,1 +1,2 @@
 include ':stock-storage'
+include ':stock-javafx'
