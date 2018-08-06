@@ -32,13 +32,16 @@ class CustomerRepositoryMock : CustomerRepository {
     }
 
     override fun updateCustomer(customer: Customer) {
-        if (containsCustomer(customer.id)) {
-            customers.remove(customer)
-            customers.add(customer)
-            logger.info("Updated customer: '{}'", customer)
-        } else {
-            throw RepositoryException("Failed to update customer with the id '${customer.id}'.")
+        customers.forEach { other ->
+            if (other.id == customer.id) {
+                customers.remove(other)
+                customers.add(customer)
+                logger.info("Updated customer: '{}'", customer)
+                return
+            }
         }
+
+        throw RepositoryException("Failed to update customer with the id '${customer.id}'.")
     }
 
     override fun containsCustomer(id: Int): Boolean {
