@@ -42,7 +42,7 @@ interface CustomerRepository {
     /**
      * Checks if there is a customer stored, that is associated with the given id.
      *
-     * @param id: id of the customer
+     * @param id: id of the customer.
      * @return [Boolean]: true if there's a customer associated with the given id, otherwise false.
      */
     @Throws(RepositoryException::class)

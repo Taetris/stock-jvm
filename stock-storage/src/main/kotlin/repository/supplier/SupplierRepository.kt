@@ -8,41 +8,57 @@ import repository.RepositoryException
 interface SupplierRepository {
 
     /**
-     * Inserts a new supplier into the repository.
+     * Inserts a new supplier into the repository. This operation will fail with an exception if there is a supplier
+     * stored, that is associated with the same id. To check if a supplier already exists, use [containsSupplier] method.
      *
      * @param supplier [Supplier] the supplier to insert.
-     * @throws RepositoryException in case insertion has failed.
+     * @throws RepositoryException in case the same supplier already exists, or there was another issue with the
+     * insertion.
      */
     @Throws(RepositoryException::class)
     fun insertSupplier(supplier: Supplier)
 
     /**
-     * Removes an existing supplier from the repository.
+     * Removes an existing supplier from the repository. This operation will fail with an exception if the given
+     * supplier does not exist. To check if a supplier exists, use [containsSupplier] method.
      *
-     * @param id: id of the supplier to remove.
-     * @throws RepositoryException in case deletion has failed.
+     * @param supplier [Supplier]: supplier to remove.
+     * @throws RepositoryException in the supplier does not exist, or there was another issue with the removal.
      */
     @Throws(RepositoryException::class)
-    fun removeSupplier(id: Int)
+    fun removeSupplier(supplier: Supplier)
 
     /**
-     * Updates an existing supplier with new values.
+     * Updates an existing supplier with new values. Supplier associated with the id of the new supplier will be removed
+     * and replaced with the new supplier. If the given supplier does not exist, the operation will fail with an
+     * exception. To check if a supplier exists, use [containsSupplier] method.
      *
-     * @param supplier [Supplier] updated supplier that should replace the existing one.
-     * @throws RepositoryException in case update has failed.
+     * @param supplier [Supplier]: updated supplier that should replace the existing one.
+     * @throws RepositoryException in case there was no supplier associated, or there was another issue with the update.
      */
     @Throws(RepositoryException::class)
     fun updateSupplier(supplier: Supplier)
 
     /**
-     * Gets the supplier with assigned id.
+     * Checks if there is a supplier stored, that is associated with the given id.
+     *
+     * @param id: id of the supplier.
+     * @return [Boolean]: true if there's a supplier associated with the given id, otherwise false.
+     */
+    @Throws(RepositoryException::class)
+    fun containsSupplier(id: Int): Boolean
+
+    /**
+     * Gets the supplier with the assigned id. If the given supplier does not exist, the operation will fail with an
+     * exception. To check if a supplier exists, use [containsSupplier] method.
      *
      * @param id: id of the supplier to retrieve.
      * @return [Supplier] the retrieved supplier.
-     * @throws RepositoryException in case retrieval has failed.
+     * @throws RepositoryException in case there was no supplier associated with the given id or there
+     * was another issue with the retrieval.
      */
     @Throws(RepositoryException::class)
-    fun getSupplier(id: Int): Supplier
+    fun getSupplierById(id: Int): Supplier
 
     /**
      * Gets all suppliers from the repository.
