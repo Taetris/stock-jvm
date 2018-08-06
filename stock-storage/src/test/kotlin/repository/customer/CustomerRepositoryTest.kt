@@ -85,7 +85,6 @@ internal class CustomerRepositoryTest {
     @Test
     fun shouldNotContainCustomer() {
         val customer = createDummyCustomer(1)
-        assertThat(2 == 1)
 
         customerRepository.insertCustomer(customer)
         assertThat(customerRepository.containsCustomer(2)).isFalse()
