@@ -3,10 +3,14 @@ buildscript {
         mavenLocal()
         mavenCentral()
         google()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
 
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath "net.ltgt.gradle:gradle-apt-plugin:$ltgtVersion"
     }
 }
 
@@ -17,8 +21,9 @@ subprojects {
         google()
     }
 
-    apply plugin: 'kotlin'
     apply plugin: 'java'
+    apply plugin: 'kotlin'
+    apply plugin: 'net.ltgt.apt'
 
     apply from: "${rootProject.rootDir}/common-dependencies.gradle"
 }
