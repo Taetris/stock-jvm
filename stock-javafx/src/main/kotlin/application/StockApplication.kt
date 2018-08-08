@@ -21,7 +21,7 @@ class StockApplication : Application() {
         stockComponent = DaggerStockComponent.create()
         stockComponent.inject(this)
 
-        val main = FXMLLoader.load<Parent>(StockApplication::class.java.getResource("../../resources/stock-overview.fxml"))
+        val main = FXMLLoader.load<Parent>(StockApplication::class.java.getResource("../../resources/stock-main.fxml"))
         val scene = Scene(main, WINDOW_WIDTH, WINDOW_HEIGHT)
         primaryStage?.scene = scene
         primaryStage?.show()

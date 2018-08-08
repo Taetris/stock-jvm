@@ -5,18 +5,16 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 
-<MenuBar xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
-    <menus>
-        <Menu mnemonicParsing="false" text="File">
-            <MenuItem mnemonicParsing="false" text="Export to PDF "/>
-            <SeparatorMenuItem mnemonicParsing="false"/>
-            <MenuItem mnemonicParsing="false" text="Save &amp; Close"/>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Item">
-            <MenuItem mnemonicParsing="false" text="Calculate Stock"/>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Help">
-            <MenuItem mnemonicParsing="false" text="About"/>
-        </Menu>
-    </menus>
+<MenuBar xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="menu.StockMenuController">
+    <Menu mnemonicParsing="false" text="File">
+        <MenuItem fx:id="exportToPdfMenuItem" mnemonicParsing="false" text="Export to PDF "/>
+        <SeparatorMenuItem mnemonicParsing="false"/>
+        <MenuItem fx:id="saveAndCloseMenuItem" mnemonicParsing="false" text="Save &amp; Close"/>
+    </Menu>
+    <Menu mnemonicParsing="false" text="Item">
+        <MenuItem fx:id="calculateStockMenuItem" mnemonicParsing="false" text="Calculate Stock"/>
+    </Menu>
+    <Menu mnemonicParsing="false" text="Help">
+        <MenuItem fx:id="aboutMenuItem" mnemonicParsing="false" text="About"/>
+    </Menu>
 </MenuBar>
