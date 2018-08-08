@@ -5,19 +5,18 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 
-<MenuBar xmlns="http://javafx.com/javafx/10.0.1">
+<MenuBar xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <menus>
         <Menu mnemonicParsing="false" text="File">
-            <items>
-                <MenuItem mnemonicParsing="false" text="Export to PDF " />
-                <SeparatorMenuItem mnemonicParsing="false" />
-                <MenuItem mnemonicParsing="false" text="Save &amp; Close" />
-            </items>
+            <MenuItem mnemonicParsing="false" text="Export to PDF "/>
+            <SeparatorMenuItem mnemonicParsing="false"/>
+            <MenuItem mnemonicParsing="false" text="Save &amp; Close"/>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Item">
+            <MenuItem mnemonicParsing="false" text="Calculate Stock"/>
         </Menu>
         <Menu mnemonicParsing="false" text="Help">
-            <items>
-                <MenuItem mnemonicParsing="false" text="About" />
-            </items>
+            <MenuItem mnemonicParsing="false" text="About"/>
         </Menu>
     </menus>
 </MenuBar>

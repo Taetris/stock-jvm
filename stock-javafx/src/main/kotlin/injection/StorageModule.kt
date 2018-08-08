@@ -9,7 +9,7 @@ import repository.supplier.mock.SupplierRepositoryMock
 import javax.inject.Singleton
 
 @Module
-class StorageModule {
+internal class StorageModule {
 
     @Singleton
     @Provides
