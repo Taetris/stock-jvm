@@ -4,6 +4,8 @@ import javafx.fxml.FXML
 import javafx.scene.control.TabPane
 import org.slf4j.LoggerFactory
 import overview.tab.TabView
+import overview.tab.customer.CustomerTab
+import overview.tab.supplier.SupplierTab
 import repository.customer.Customer
 
 class StockOverviewController {
@@ -13,25 +15,14 @@ class StockOverviewController {
     @FXML
     private lateinit var customTabPane: TabPane
 
+    private val customerTab = CustomerTab()
+    private val supplierTab = SupplierTab()
+
     @FXML
     fun initialize() {
         logger.info("Initializing")
 
-        val sampleView = object : TabView<Customer>() {
-
-            override fun getTabName(): String {
-                return "Customers"
-            }
-
-            override fun getButtonName(): String {
-                return "Add Customer"
-            }
-
-            override fun getSearchHint(): String {
-                return "Search for Customers..."
-            }
-        }
-
-        customTabPane.tabs.add(sampleView.generateView())
+        customTabPane.tabs.add(customerTab.generateView())
+        customTabPane.tabs.add(supplierTab.generateView())
     }
 }

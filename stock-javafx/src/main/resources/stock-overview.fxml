@@ -3,22 +3,4 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <TabPane fx:id="customTabPane" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS" xmlns:fx="http://javafx.com/fxml/1"
-         fx:controller="overview.StockOverviewController">
-    <Tab text="Untitled Tab 1">
-            <VBox>
-                <TableView VBox.vgrow="ALWAYS">
-                    <columns>
-                        <TableColumn prefWidth="75.0" text="C1"/>
-                        <TableColumn prefWidth="75.0" text="C2"/>
-                    </columns>
-                    <columnResizePolicy>
-                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-                    </columnResizePolicy>
-                </TableView>
-                <HBox alignment="BOTTOM_RIGHT" VBox.vgrow="NEVER">
-                    <Button/>
-                    <TextField/>
-                </HBox>
-            </VBox>
-    </Tab>
-</TabPane>
+         fx:controller="overview.StockOverviewController"/>
