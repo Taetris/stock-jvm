@@ -59,7 +59,7 @@ internal class SupplierRepositoryTest {
         supplierRepository.insertSupplier(supplier)
         assertThat(supplierRepository.getSupplierById(1)).isEqualTo(supplier)
 
-        val changedSupplier = Supplier(1, "name2", 2, "address2")
+        val changedSupplier = Supplier(1, "name2", "2", "address2")
         supplierRepository.updateSupplier(changedSupplier)
 
         assertThat(supplierRepository.getSupplierById(1).name).isEqualTo("name2")
@@ -69,7 +69,7 @@ internal class SupplierRepositoryTest {
 
     @Test
     fun shouldFailToUpdateNonExistingSupplier() {
-        val supplier = Supplier(1, "name2", 2, "address2")
+        val supplier = Supplier(1, "name2", "2", "address2")
         assertThrows(RepositoryException::class.java) { supplierRepository.updateSupplier(supplier) }
     }
 
@@ -124,5 +124,5 @@ internal class SupplierRepositoryTest {
         assertThat(supplierRepository.getAllSuppliers().size).isZero()
     }
 
-    private fun createDummySupplier(id: Int): Supplier = Supplier(id, "name", 1, "address")
+    private fun createDummySupplier(id: Int): Supplier = Supplier(id, "name", "accountNumber", "address")
 }

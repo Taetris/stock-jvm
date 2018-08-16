@@ -2,11 +2,9 @@ package repository.customer
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertThrows
-import org.junit.jupiter.api.Assertions.fail
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import repository.RepositoryException
-
 import repository.customer.mock.CustomerRepositoryMock
 
 internal class CustomerRepositoryTest {
@@ -60,17 +58,17 @@ internal class CustomerRepositoryTest {
         customerRepository.insertCustomer(customer)
         assertThat(customerRepository.getCustomerById(1)).isEqualTo(customer)
 
-        val changedCustomer = Customer(1, "name2", 2, "address2")
+        val changedCustomer = Customer(1, "name2", "2", "address2")
         customerRepository.updateCustomer(changedCustomer)
 
         assertThat(customerRepository.getCustomerById(1).name).isEqualTo("name2")
-        assertThat(customerRepository.getCustomerById(1).accountNumber).isEqualTo(2)
+        assertThat(customerRepository.getCustomerById(1).accountNumber).isEqualTo("2")
         assertThat(customerRepository.getCustomerById(1).address).isEqualTo("address2")
     }
 
     @Test
     fun shouldFailToUpdateNonExistingCustomer() {
-        val customer = Customer(1, "name2", 2, "address2")
+        val customer = Customer(1, "name2", "2", "address2")
         assertThrows(RepositoryException::class.java) { customerRepository.updateCustomer(customer) }
     }
 
@@ -103,7 +101,7 @@ internal class CustomerRepositoryTest {
         val customer = createDummyCustomer(1)
 
         customerRepository.insertCustomer(customer)
-        assertThrows(RepositoryException::class.java) { customerRepository.getCustomerById(2)}
+        assertThrows(RepositoryException::class.java) { customerRepository.getCustomerById(2) }
     }
 
     @Test
@@ -125,5 +123,5 @@ internal class CustomerRepositoryTest {
         assertThat(customerRepository.getAllCustomers().size).isZero()
     }
 
-    private fun createDummyCustomer(id: Int): Customer = Customer(id, "name", 1, "address")
+    private fun createDummyCustomer(id: Int): Customer = Customer(id, "name", "accountNumber", "address")
 }
