@@ -63,7 +63,7 @@ internal class SupplierRepositoryTest {
         supplierRepository.updateSupplier(changedSupplier)
 
         assertThat(supplierRepository.getSupplierById(1).name).isEqualTo("name2")
-        assertThat(supplierRepository.getSupplierById(1).accountNumber).isEqualTo(2)
+        assertThat(supplierRepository.getSupplierById(1).accountNumber).isEqualTo("2")
         assertThat(supplierRepository.getSupplierById(1).address).isEqualTo("address2")
     }
 
