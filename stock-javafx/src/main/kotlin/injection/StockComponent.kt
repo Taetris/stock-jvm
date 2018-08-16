@@ -1,12 +1,12 @@
 package injection
 
-import application.StockApplication
 import dagger.Component
+import overview.StockOverviewController
 import javax.inject.Singleton
 
 @Singleton
 @Component(modules = [StorageModule::class])
 interface StockComponent {
 
-    fun inject(stockApplication: StockApplication)
+    fun inject(stockOverviewController: StockOverviewController)
 }

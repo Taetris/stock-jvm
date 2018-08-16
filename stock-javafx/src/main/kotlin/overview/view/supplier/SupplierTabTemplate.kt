@@ -1,11 +1,12 @@
-package overview.tab.supplier
+package overview.view.supplier
 
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
-import overview.tab.TabView
+import overview.view.Action
+import overview.view.TabViewTemplate
 import repository.supplier.Supplier
 
-class SupplierTab : TabView<Supplier>() {
+class SupplierTabTemplate : TabViewTemplate<Supplier>(Action.SUPPLIER) {
 
     override fun populateTable(tableView: TableView<Supplier>) {
         tableView.columns.addAll(getColumns())

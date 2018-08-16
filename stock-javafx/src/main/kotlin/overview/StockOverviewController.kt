@@ -3,11 +3,8 @@ package overview
 import javafx.fxml.FXML
 import javafx.scene.control.TabPane
 import org.slf4j.LoggerFactory
-import overview.tab.TabView
-import overview.tab.customer.CustomerTab
-import overview.tab.supplier.SupplierTab
-import repository.customer.Customer
-
+import overview.view.customer.CustomerTabTemplate
+import overview.view.supplier.SupplierTabTemplate
 class StockOverviewController {
 
     private val logger = LoggerFactory.getLogger(StockOverviewController::class.java)
@@ -15,8 +12,8 @@ class StockOverviewController {
     @FXML
     private lateinit var customTabPane: TabPane
 
-    private val customerTab = CustomerTab()
-    private val supplierTab = SupplierTab()
+    private val customerTab = CustomerTabTemplate()
+    private val supplierTab = SupplierTabTemplate()
 
     @FXML
     fun initialize() {
