@@ -3,6 +3,7 @@ package application
 import injection.DaggerStockComponent
 import injection.StockComponent
 import javafx.application.Application
+import javafx.application.Platform
 import javafx.fxml.FXMLLoader
 import javafx.scene.Parent
 import javafx.scene.Scene
@@ -12,9 +13,13 @@ class StockApplication : Application() {
 
     override fun start(primaryStage: Stage?) {
         stockComponent = DaggerStockComponent.create()
-        val main = FXMLLoader.load<Parent>(StockApplication::class.java.getResource("../../resources/stock-main.fxml"))
+        val main = FXMLLoader.load<Parent>(StockApplication::class.java.getResource("../../resources/main/stock-main.fxml"))
         val scene = Scene(main, WINDOW_WIDTH, WINDOW_HEIGHT)
         primaryStage?.scene = scene
+        primaryStage?.setOnCloseRequest {
+            Platform.exit()
+            System.exit(0)
+        }
         primaryStage?.show()
     }
 

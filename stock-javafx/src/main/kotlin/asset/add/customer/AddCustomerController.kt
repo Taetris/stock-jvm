@@ -5,6 +5,7 @@ import asset.add.customer.interactor.AddCustomerOutput
 import asset.add.supplier.AddSupplierController
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
+import javafx.scene.Scene
 import javafx.scene.control.Button
 import javafx.scene.control.TextField
 import javafx.scene.layout.Pane
@@ -17,8 +18,9 @@ class AddCustomerController : AddCustomerOutput {
 
     companion object {
 
-        fun createView(): Pane {
-            return FXMLLoader.load<Pane>(AddCustomerController::class.java.getResource("../../../../resources/asset/stock-add-customer.fxml"))
+        fun create(): Scene {
+            val view = FXMLLoader.load<Pane>(AddCustomerController::class.java.getResource("../../../../resources/asset/add/stock-add-customer.fxml"))
+            return Scene(view)
         }
     }
 

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.VBox?>
+<TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS" xmlns:fx="http://javafx.com/fxml/1">
+
+    <fx:include source="stock-customer-overview.fxml"/>
+    <fx:include source="stock-supplier-overview.fxml"/>
+
+</TabPane>

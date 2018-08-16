@@ -4,6 +4,7 @@ import asset.add.supplier.interactor.AddSupplierInteractor
 import asset.add.supplier.interactor.AddSupplierOutput
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
+import javafx.scene.Scene
 import javafx.scene.control.Button
 import javafx.scene.control.TextField
 import javafx.scene.layout.Pane
@@ -16,8 +17,9 @@ class AddSupplierController : AddSupplierOutput {
 
     companion object {
 
-        fun createView(): Pane {
-            return FXMLLoader.load<Pane>(AddSupplierController::class.java.getResource("../../../../resources/asset/stock-add-supplier.fxml"))
+        fun create(): Scene {
+            val view = FXMLLoader.load<Pane>(AddSupplierController::class.java.getResource("../../../../resources/asset/add/stock-add-supplier.fxml"))
+            return Scene(view)
         }
     }
 

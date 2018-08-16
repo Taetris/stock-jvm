@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<Tab text="Suppliers" xmlns:fx="http://javafx.com/fxml/1"
+     fx:controller="asset.overview.supplier.SupplierOverviewController">
+    <VBox>
+        <TableView VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn text="ID"/>
+                <TableColumn text="Name"/>
+                <TableColumn text="Account Number"/>
+                <TableColumn text="Address"/>
+            </columns>
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+            </columnResizePolicy>
+        </TableView>
+        <HBox alignment="BOTTOM_RIGHT" VBox.vgrow="NEVER">
+            <padding>
+                <Insets top="5" right="5" bottom="5" left="5"/>
+            </padding>
+            <Button fx:id="addSupplierButton" text="Add Supplier"/>
+            <TextField fx:id="searchSupplierTextField" promptText="Search For Supplier..."/>
+        </HBox>
+    </VBox>
+</Tab>
