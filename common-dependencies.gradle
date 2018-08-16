@@ -8,6 +8,8 @@ dependencies {
     compile "com.google.dagger:dagger:$daggerVersion"
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"
 
+    compile "org.apache.commons:commons-lang3:$apacheCommonsVersion"
+
     testCompile "org.junit.jupiter:junit-jupiter-api:$junitVersion"
     testCompile "org.junit.jupiter:junit-jupiter-params:$junitVersion"
     testCompile "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
