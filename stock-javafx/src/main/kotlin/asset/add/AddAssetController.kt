@@ -1,5 +1,7 @@
 package asset.add
 
+import asset.add.customer.AddCustomerController
+import asset.add.supplier.AddSupplierController
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.Scene

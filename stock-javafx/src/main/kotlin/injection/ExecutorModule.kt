@@ -9,18 +9,18 @@ import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
-class ExecutorModule {
+internal class ExecutorModule {
 
     @Singleton
     @Provides
-    @Named("Main")
+    @Named("main")
     fun provideMainExecutor(): Executor {
         return MainExecutor()
     }
 
     @Singleton
     @Provides
-    @Named("Worker")
+    @Named("worker")
     fun provideWorkerExecutor(): Executor {
         return WorkerExecutor()
     }
