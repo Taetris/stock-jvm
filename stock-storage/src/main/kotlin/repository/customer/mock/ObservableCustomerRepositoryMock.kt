@@ -2,21 +2,26 @@ package repository.customer.mock
 
 import org.slf4j.LoggerFactory
 import repository.RepositoryException
+import repository.RepositoryObserver
 import repository.customer.Customer
-import repository.customer.CustomerRepository
+import repository.customer.ObservableCustomerRepository
 
 /**
- * Mock implementation of the [CustomerRepository] that uses an in-memory storage.
+ * Mock implementation of the [ObservableCustomerRepository] that uses an in-memory storage.
  */
-class CustomerRepositoryMock : CustomerRepository {
+class ObservableCustomerRepositoryMock : ObservableCustomerRepository {
+
+    override val observers: MutableList<RepositoryObserver>
+        get() = ArrayList()
 
     private val customers: MutableList<Customer> = ArrayList()
-    private val logger = LoggerFactory.getLogger(CustomerRepositoryMock::class.java)
+    private val logger = LoggerFactory.getLogger(ObservableCustomerRepositoryMock::class.java)
 
     override fun insertCustomer(customer: Customer) {
         if (!containsCustomer(customer.id)) {
             customers.add(customer)
             logger.info("Inserted customer: '{}'", customer)
+            notifyObservers()
         } else {
             throw RepositoryException("Failed to insert customer '$customer'.")
         }
@@ -26,6 +31,7 @@ class CustomerRepositoryMock : CustomerRepository {
         if (containsCustomer(customer.id)) {
             customers.remove(customer)
             logger.info("Removed customer '{}'", customer)
+            notifyObservers()
         } else {
             throw RepositoryException("Failed to remove customer '$customer'.")
         }
@@ -37,6 +43,7 @@ class CustomerRepositoryMock : CustomerRepository {
                 customers.remove(other)
                 customers.add(customer)
                 logger.info("Updated customer: '{}'", customer)
+                notifyObservers()
                 return
             }
         }

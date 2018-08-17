@@ -6,15 +6,15 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import repository.RepositoryException
 
-import repository.supplier.mock.SupplierRepositoryMock
+import repository.supplier.mock.ObservableSupplierRepositoryMock
 
 internal class SupplierRepositoryTest {
 
-    private lateinit var supplierRepository: SupplierRepository
+    private lateinit var supplierRepository: ObservableSupplierRepository
 
     @BeforeEach
     fun setUp() {
-        supplierRepository = SupplierRepositoryMock()
+        supplierRepository = ObservableSupplierRepositoryMock()
     }
 
     @Test

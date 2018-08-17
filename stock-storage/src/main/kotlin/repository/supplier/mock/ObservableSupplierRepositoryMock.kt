@@ -2,21 +2,26 @@ package repository.supplier.mock
 
 import org.slf4j.LoggerFactory
 import repository.RepositoryException
+import repository.RepositoryObserver
+import repository.supplier.ObservableSupplierRepository
 import repository.supplier.Supplier
-import repository.supplier.SupplierRepository
 
 /**
- * Mock implementation of the [SupplierRepository] that uses an in-memory storage.
+ * Mock implementation of the [ObservableSupplierRepository] that uses an in-memory storage.
  */
-class SupplierRepositoryMock : SupplierRepository {
+class ObservableSupplierRepositoryMock : ObservableSupplierRepository {
+
+    override val observers: MutableList<RepositoryObserver>
+        get() = ArrayList()
 
     private val suppliers: MutableList<Supplier> = ArrayList()
-    private val logger = LoggerFactory.getLogger(SupplierRepositoryMock::class.java)
+    private val logger = LoggerFactory.getLogger(ObservableSupplierRepositoryMock::class.java)
 
     override fun insertSupplier(supplier: Supplier) {
         if (!containsSupplier(supplier.id)) {
             suppliers.add(supplier)
             logger.info("Inserted supplier: '{}'", supplier)
+            notifyObservers()
         } else {
             throw RepositoryException("Failed to insert supplier '$supplier'.")
         }
@@ -26,6 +31,7 @@ class SupplierRepositoryMock : SupplierRepository {
         if (containsSupplier(supplier.id)) {
             suppliers.remove(supplier)
             logger.info("Removed supplier '{}'", supplier)
+            notifyObservers()
         } else {
             throw RepositoryException("Failed to remove supplier '$supplier'.")
         }
@@ -37,6 +43,7 @@ class SupplierRepositoryMock : SupplierRepository {
                 suppliers.remove(other)
                 suppliers.add(supplier)
                 logger.info("Updated supplier: '{}'", supplier)
+                notifyObservers()
                 return
             }
         }

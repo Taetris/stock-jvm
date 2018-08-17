@@ -1,15 +1,17 @@
 package repository.customer
 
 import repository.RepositoryException
+import repository.RepositoryObservable
 
 /**
- * Represents the repository for storing of all customers.
+ * Represents the repository for storing of all customers. In case of a change it will notify all of its observers.
  */
-interface CustomerRepository {
+interface ObservableCustomerRepository : RepositoryObservable {
 
     /**
      * Inserts a new customer into the repository. This operation will fail with an exception if there is a customer
      * stored, that is associated with the same id. To check if a customer already exists, use [containsCustomer] method.
+     * In case of a successful insertion, observers are notified.
      *
      * @param customer [Customer] the customer to insert.
      * @throws RepositoryException in case the same customer already exists, or there was another issue with the
@@ -20,7 +22,8 @@ interface CustomerRepository {
 
     /**
      * Removes an existing customer from the repository. This operation will fail with an exception if the given
-     * customer does not exist. To check if a customer exists, use [containsCustomer] method.
+     * customer does not exist. To check if a customer exists, use [containsCustomer] method. In case of a successful
+     * removal, observers are notified.
      *
      * @param customer [Customer]: customer to remove.
      * @throws RepositoryException in the customer does not exist, or there was another issue with the removal.
@@ -31,7 +34,8 @@ interface CustomerRepository {
     /**
      * Updates an existing customer with new values. Customer associated with the id of the new customer will be removed
      * and replaced with the new customer. If the given customer does not exist, the operation will fail with an
-     * exception. To check if a customer exists, use [containsCustomer] method.
+     * exception. To check if a customer exists, use [containsCustomer] method. In case of a successful update, observers
+     * are notified.
      *
      * @param customer [Customer]: updated customer that should replace the existing one.
      * @throws RepositoryException in case there was no customer associated, or there was another issue with the update.

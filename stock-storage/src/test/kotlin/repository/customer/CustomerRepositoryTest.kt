@@ -5,15 +5,15 @@ import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import repository.RepositoryException
-import repository.customer.mock.CustomerRepositoryMock
+import repository.customer.mock.ObservableCustomerRepositoryMock
 
 internal class CustomerRepositoryTest {
 
-    private lateinit var customerRepository: CustomerRepository
+    private lateinit var customerRepository: ObservableCustomerRepository
 
     @BeforeEach
     fun setUp() {
-        customerRepository = CustomerRepositoryMock()
+        customerRepository = ObservableCustomerRepositoryMock()
     }
 
     @Test
