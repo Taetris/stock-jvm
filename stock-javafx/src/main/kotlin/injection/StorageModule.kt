@@ -2,10 +2,10 @@ package injection
 
 import dagger.Module
 import dagger.Provides
-import repository.customer.CustomerRepository
-import repository.customer.mock.CustomerRepositoryMock
-import repository.supplier.SupplierRepository
-import repository.supplier.mock.SupplierRepositoryMock
+import repository.customer.ObservableCustomerRepository
+import repository.customer.mock.ObservableCustomerRepositoryMock
+import repository.supplier.ObservableSupplierRepository
+import repository.supplier.mock.ObservableSupplierRepositoryMock
 import javax.inject.Singleton
 
 @Module
@@ -13,13 +13,13 @@ internal class StorageModule {
 
     @Singleton
     @Provides
-    fun provideCustomerRepository(): CustomerRepository {
-        return CustomerRepositoryMock()
+    fun provideCustomerRepository(): ObservableCustomerRepository {
+        return ObservableCustomerRepositoryMock()
     }
 
     @Singleton
     @Provides
-    fun provideSupplierRepository(): SupplierRepository {
-        return SupplierRepositoryMock()
+    fun provideSupplierRepository(): ObservableSupplierRepository {
+        return ObservableSupplierRepositoryMock()
     }
 }

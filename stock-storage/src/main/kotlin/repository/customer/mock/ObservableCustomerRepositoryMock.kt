@@ -11,11 +11,9 @@ import repository.customer.ObservableCustomerRepository
  */
 class ObservableCustomerRepositoryMock : ObservableCustomerRepository {
 
-    override val observers: MutableList<RepositoryObserver>
-        get() = ArrayList()
-
-    private val customers: MutableList<Customer> = ArrayList()
     private val logger = LoggerFactory.getLogger(ObservableCustomerRepositoryMock::class.java)
+    private val customers: MutableList<Customer> = ArrayList()
+    private val observers: MutableList<RepositoryObserver> = ArrayList()
 
     override fun insertCustomer(customer: Customer) {
         if (!containsCustomer(customer.id)) {
@@ -75,5 +73,19 @@ class ObservableCustomerRepositoryMock : ObservableCustomerRepository {
 
     override fun getAllCustomers(): List<Customer> {
         return customers
+    }
+
+    override fun register(repositoryObserver: RepositoryObserver) {
+        if (!observers.contains(repositoryObserver)) {
+            observers.add(repositoryObserver)
+            logger.info("Added observer '$repositoryObserver'")
+        }
+    }
+
+    override fun notifyObservers() {
+        observers.forEach { observer ->
+            logger.info("Notifying observer '$observer'")
+            observer.onRepositoryChanged()
+        }
     }
 }

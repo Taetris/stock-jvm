@@ -11,11 +11,9 @@ import repository.supplier.Supplier
  */
 class ObservableSupplierRepositoryMock : ObservableSupplierRepository {
 
-    override val observers: MutableList<RepositoryObserver>
-        get() = ArrayList()
-
-    private val suppliers: MutableList<Supplier> = ArrayList()
     private val logger = LoggerFactory.getLogger(ObservableSupplierRepositoryMock::class.java)
+    private val suppliers: MutableList<Supplier> = ArrayList()
+    private  val observers: MutableList<RepositoryObserver> = ArrayList()
 
     override fun insertSupplier(supplier: Supplier) {
         if (!containsSupplier(supplier.id)) {
@@ -73,5 +71,19 @@ class ObservableSupplierRepositoryMock : ObservableSupplierRepository {
 
     override fun getAllSuppliers(): List<Supplier> {
         return suppliers
+    }
+
+    override fun register(repositoryObserver: RepositoryObserver) {
+        if (!observers.contains(repositoryObserver)) {
+            observers.add(repositoryObserver)
+            logger.info("Added observer '$repositoryObserver'")
+        }
+    }
+
+    override fun notifyObservers() {
+        observers.forEach { observer ->
+            logger.info("Notifying observer '$observer'")
+            observer.onRepositoryChanged()
+        }
     }
 }
