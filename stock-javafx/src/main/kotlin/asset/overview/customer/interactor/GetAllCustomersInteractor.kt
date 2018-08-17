@@ -3,7 +3,7 @@ package asset.overview.customer.interactor
 import application.StockApplication
 import application.executor.Executor
 import repository.RepositoryException
-import repository.customer.CustomerRepository
+import repository.customer.ObservableCustomerRepository
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -14,7 +14,7 @@ class GetAllCustomersInteractor(private val getAllCustomersOutput: GetAllCustome
     }
 
     @Inject
-    internal lateinit var customerRepository: CustomerRepository
+    internal lateinit var customerRepository: ObservableCustomerRepository
 
     @field:[Inject Named("worker")]
     internal lateinit var workerExecutor: Executor

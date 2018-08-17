@@ -3,8 +3,8 @@ package asset.add.supplier.interactor
 import application.StockApplication
 import application.executor.Executor
 import repository.RepositoryException
+import repository.supplier.ObservableSupplierRepository
 import repository.supplier.Supplier
-import repository.supplier.SupplierRepository
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -15,7 +15,7 @@ class AddSupplierInteractor(private val addSupplierOutput: AddSupplierOutput) {
     }
 
     @Inject
-    lateinit var supplierRepository: SupplierRepository
+    lateinit var supplierRepository: ObservableSupplierRepository
 
     @field:[Inject Named("worker")]
     lateinit var workerExecutor: Executor

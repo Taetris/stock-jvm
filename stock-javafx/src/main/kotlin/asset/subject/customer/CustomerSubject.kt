@@ -11,7 +11,7 @@ import javax.inject.Named
 class CustomerSubject: RepositoryObserver {
 
     private val logger = LoggerFactory.getLogger(CustomerSubject::class.java)
-    private val observers = ArrayList<CustomerSubjectObserver>()
+    private val observers = ArrayList<CustomerObserver>()
 
     @Inject
     internal lateinit var customerRepository: ObservableCustomerRepository
@@ -24,9 +24,10 @@ class CustomerSubject: RepositoryObserver {
 
     init {
         StockApplication.stockComponent.inject(this)
+        customerRepository.register(this)
     }
 
-    fun register(observer: CustomerSubjectObserver) {
+    fun register(observer: CustomerObserver) {
         logger.info("Registering Observer '$observer")
         observers.add(observer)
     }

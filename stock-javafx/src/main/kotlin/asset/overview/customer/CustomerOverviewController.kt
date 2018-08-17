@@ -3,6 +3,8 @@ package asset.overview.customer
 import asset.add.customer.AddCustomerController
 import asset.overview.customer.interactor.GetAllCustomersInteractor
 import asset.overview.customer.interactor.GetAllCustomersOutput
+import asset.subject.customer.CustomerObserver
+import asset.subject.customer.CustomerSubject
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections
@@ -15,7 +17,7 @@ import javafx.stage.Stage
 import org.slf4j.LoggerFactory
 import repository.customer.Customer
 
-class CustomerOverviewController : GetAllCustomersOutput {
+class CustomerOverviewController : GetAllCustomersOutput, CustomerObserver {
 
     private val logger = LoggerFactory.getLogger(CustomerOverviewController::class.java)
 
@@ -34,6 +36,7 @@ class CustomerOverviewController : GetAllCustomersOutput {
     private lateinit var addCustomerButton: Button
 
     private val interactor = GetAllCustomersInteractor(this)
+    private val subject = CustomerSubject()
 
     @FXML
     fun initialize() {
@@ -42,7 +45,7 @@ class CustomerOverviewController : GetAllCustomersOutput {
         initializeListeners()
         initializeTable()
 
-        interactor.getAllCustomers()
+        fetchCustomers()
     }
 
     override fun onCustomersRetrieved(customers: List<Customer>) {
@@ -55,12 +58,23 @@ class CustomerOverviewController : GetAllCustomersOutput {
         customersTable.placeholder = Label(error)
     }
 
+    override fun onCustomersChanged() {
+        fetchCustomers()
+    }
+
+    private fun fetchCustomers() {
+        customersTable.items.clear()
+        interactor.getAllCustomers()
+    }
+
     private fun initializeListeners() {
         addCustomerButton.setOnAction {
             val stage = Stage()
             stage.scene = AddCustomerController.create()
             stage.showAndWait()
         }
+
+        subject.register(this)
     }
 
     private fun initializeTable() {

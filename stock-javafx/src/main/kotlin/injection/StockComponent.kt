@@ -3,6 +3,7 @@ package injection
 import asset.add.customer.interactor.AddCustomerInteractor
 import asset.add.supplier.interactor.AddSupplierInteractor
 import asset.overview.customer.interactor.GetAllCustomersInteractor
+import asset.overview.supplier.interactor.GetAllSuppliersInteractor
 import asset.subject.customer.CustomerSubject
 import asset.subject.supplier.SupplierSubject
 import dagger.Component
@@ -17,6 +18,8 @@ interface StockComponent {
     fun inject(addCustomerInteractor: AddCustomerInteractor)
 
     fun inject(getAllCustomersInteractor: GetAllCustomersInteractor)
+
+    fun inject(getAllSuppliersInteractor: GetAllSuppliersInteractor)
 
     fun inject(customerSubject: CustomerSubject)
 
