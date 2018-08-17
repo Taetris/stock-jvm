@@ -7,12 +7,12 @@
 <Tab text="Customers" xmlns:fx="http://javafx.com/fxml/1"
      fx:controller="asset.overview.customer.CustomerOverviewController">
     <VBox>
-        <TableView VBox.vgrow="ALWAYS">
+        <TableView fx:id="customersTable" VBox.vgrow="ALWAYS">
             <columns>
-                <TableColumn text="ID"/>
-                <TableColumn text="Name"/>
-                <TableColumn text="Account Number"/>
-                <TableColumn text="Address"/>
+                <TableColumn fx:id="idColumn" text="ID"/>
+                <TableColumn fx:id="nameColumn" text="Name"/>
+                <TableColumn fx:id="accountNumberColumn" text="Account Number"/>
+                <TableColumn fx:id="addressColumn" text="Address"/>
             </columns>
             <columnResizePolicy>
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
