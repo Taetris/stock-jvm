@@ -1,7 +1,7 @@
-package asset.add.supplier
+package asset.add.item
 
-import asset.add.supplier.interactor.AddSupplierInteractor
-import asset.add.supplier.interactor.AddSupplierOutput
+import asset.add.item.interactor.AddItemInteractor
+import asset.add.item.interactor.AddItemOutput
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
@@ -13,17 +13,17 @@ import org.slf4j.LoggerFactory
 import util.Dialog
 import util.NumberTextFormatter
 
-class AddSupplierController : AddSupplierOutput {
+class AddItemController : AddItemOutput {
 
     companion object {
 
         fun create(): Scene {
-            val view = FXMLLoader.load<Pane>(AddSupplierController::class.java.getResource("../../../../resources/asset/add/stock-add-supplier.fxml"))
+            val view = FXMLLoader.load<Pane>(AddItemController::class.java.getResource("../../../../resources/asset/add/stock-add-item.fxml"))
             return Scene(view)
         }
     }
 
-    private val logger = LoggerFactory.getLogger(AddSupplierController::class.java)
+    private val logger = LoggerFactory.getLogger(AddItemController::class.java)
 
     @FXML
     private lateinit var cancelButton: Button
@@ -38,7 +38,7 @@ class AddSupplierController : AddSupplierOutput {
     @FXML
     private lateinit var addressTextField: TextField
 
-    private val interactor = AddSupplierInteractor(this)
+    private val interactor = AddItemInteractor(this)
 
     @FXML
     fun initialize() {
@@ -52,7 +52,7 @@ class AddSupplierController : AddSupplierOutput {
     }
 
     override fun onInsertionFailed(error: String) {
-        Dialog.showErrorDialog(header = "Failed to insert supplier", content = error)
+        Dialog.showErrorDialog(header = "Failed to insert item", content = error)
     }
 
     private fun setListeners() {
@@ -60,7 +60,7 @@ class AddSupplierController : AddSupplierOutput {
 
         cancelButton.setOnAction { (cancelButton.scene.window as Stage).close() }
         addButton.setOnAction {
-            interactor.addNewSupplier(
+            interactor.addNewItem(
                     idTextField.text.toInt(),
                     nameTextField.text,
                     accountNumberTextField.text,

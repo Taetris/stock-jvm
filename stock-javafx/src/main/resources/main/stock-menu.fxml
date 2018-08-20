@@ -7,9 +7,6 @@
         <SeparatorMenuItem mnemonicParsing="false"/>
         <MenuItem fx:id="saveAndCloseMenuItem" mnemonicParsing="false" text="Save &amp; Close"/>
     </Menu>
-    <Menu mnemonicParsing="false" text="Item">
-        <MenuItem fx:id="calculateStockMenuItem" mnemonicParsing="false" text="Calculate Stock"/>
-    </Menu>
     <Menu mnemonicParsing="false" text="Help">
         <MenuItem fx:id="aboutMenuItem" mnemonicParsing="false" text="About"/>
     </Menu>

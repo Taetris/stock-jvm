@@ -23,7 +23,6 @@
                 <Insets top="5" right="5" bottom="5" left="5"/>
             </padding>
             <Button fx:id="addCustomerButton" text="Add Customer"/>
-            <TextField fx:id="searchCustomerTextField" promptText="Search For Customer..."/>
         </HBox>
     </VBox>
 </Tab>

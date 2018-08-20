@@ -10,7 +10,6 @@ interface RepositoryObservable {
      */
     fun register(repositoryObserver: RepositoryObserver)
 
-
     /**
      * Notifies all registered observers.
      */

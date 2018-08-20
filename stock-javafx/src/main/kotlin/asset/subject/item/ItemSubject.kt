@@ -1,20 +1,20 @@
-package asset.subject.supplier
+package asset.subject.item
 
 import application.StockApplication
 import application.executor.Executor
 import org.slf4j.LoggerFactory
 import repository.RepositoryObserver
-import repository.supplier.ObservableSupplierRepository
+import repository.item.ObservableItemRepository
 import javax.inject.Inject
 import javax.inject.Named
 
-class SupplierSubject : RepositoryObserver {
+class ItemSubject : RepositoryObserver {
 
-    private val logger = LoggerFactory.getLogger(SupplierSubject::class.java)
-    private val observers = ArrayList<SupplierObserver>()
+    private val logger = LoggerFactory.getLogger(ItemSubject::class.java)
+    private val observers = ArrayList<ItemObserver>()
 
     @Inject
-    internal lateinit var supplierRepository: ObservableSupplierRepository
+    internal lateinit var itemRepository: ObservableItemRepository
 
     @field:[Inject Named("worker")]
     internal lateinit var workerExecutor: Executor
@@ -24,16 +24,16 @@ class SupplierSubject : RepositoryObserver {
 
     init {
         StockApplication.stockComponent.inject(this)
-        supplierRepository.register(this)
+        itemRepository.register(this)
     }
 
-    fun register(observer: SupplierObserver) {
+    fun register(observer: ItemObserver) {
         logger.info("Registering Observer '$observer")
         observers.add(observer)
     }
 
     override fun onRepositoryChanged() {
-        logger.info("Supplier repository has changed")
-        mainExecutor.submit(Runnable { observers.forEach { it.onSuppliersChanged() } })
+        logger.info("Item repository has changed")
+        mainExecutor.submit(Runnable { observers.forEach { it.onItemsChanged() } })
     }
 }

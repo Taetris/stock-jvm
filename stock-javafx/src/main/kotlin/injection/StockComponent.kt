@@ -1,11 +1,11 @@
 package injection
 
 import asset.add.customer.interactor.AddCustomerInteractor
-import asset.add.supplier.interactor.AddSupplierInteractor
+import asset.add.item.interactor.AddItemInteractor
 import asset.overview.customer.interactor.GetAllCustomersInteractor
-import asset.overview.supplier.interactor.GetAllSuppliersInteractor
+import asset.overview.item.interactor.GetAllItemsInteractor
 import asset.subject.customer.CustomerSubject
-import asset.subject.supplier.SupplierSubject
+import asset.subject.item.ItemSubject
 import dagger.Component
 import javax.inject.Singleton
 
@@ -13,15 +13,15 @@ import javax.inject.Singleton
 @Component(modules = [StorageModule::class, ExecutorModule::class])
 interface StockComponent {
 
-    fun inject(addSupplierInteractor: AddSupplierInteractor)
+    fun inject(addItemInteractor: AddItemInteractor)
 
     fun inject(addCustomerInteractor: AddCustomerInteractor)
 
     fun inject(getAllCustomersInteractor: GetAllCustomersInteractor)
 
-    fun inject(getAllSuppliersInteractor: GetAllSuppliersInteractor)
+    fun inject(getAllItemsInteractor: GetAllItemsInteractor)
 
     fun inject(customerSubject: CustomerSubject)
 
-    fun inject(supplierSubject: SupplierSubject)
+    fun inject(itemSubject: ItemSubject)
 }

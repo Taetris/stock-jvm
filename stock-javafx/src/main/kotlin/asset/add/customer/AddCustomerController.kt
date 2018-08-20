@@ -2,7 +2,6 @@ package asset.add.customer
 
 import asset.add.customer.interactor.AddCustomerInteractor
 import asset.add.customer.interactor.AddCustomerOutput
-import asset.add.supplier.AddSupplierController
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
@@ -24,7 +23,7 @@ class AddCustomerController : AddCustomerOutput {
         }
     }
 
-    private val logger = LoggerFactory.getLogger(AddSupplierController::class.java)
+    private val logger = LoggerFactory.getLogger(AddCustomerController::class.java)
 
     @FXML
     private lateinit var cancelButton: Button

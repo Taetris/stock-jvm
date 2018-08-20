@@ -4,8 +4,8 @@ import dagger.Module
 import dagger.Provides
 import repository.customer.ObservableCustomerRepository
 import repository.customer.mock.ObservableCustomerRepositoryMock
-import repository.supplier.ObservableSupplierRepository
-import repository.supplier.mock.ObservableSupplierRepositoryMock
+import repository.item.ObservableItemRepository
+import repository.item.mock.ObservableItemRepositoryMock
 import javax.inject.Singleton
 
 @Module
@@ -19,7 +19,7 @@ internal class StorageModule {
 
     @Singleton
     @Provides
-    fun provideSupplierRepository(): ObservableSupplierRepository {
-        return ObservableSupplierRepositoryMock()
+    fun provideSupplierRepository(): ObservableItemRepository {
+        return ObservableItemRepositoryMock()
     }
 }

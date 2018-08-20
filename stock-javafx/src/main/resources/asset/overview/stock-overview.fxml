@@ -5,6 +5,6 @@
 <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS" xmlns:fx="http://javafx.com/fxml/1">
 
     <fx:include source="stock-customer-overview.fxml"/>
-    <fx:include source="stock-supplier-overview.fxml"/>
+    <fx:include source="stock-item-overview.fxml"/>
 
 </TabPane>

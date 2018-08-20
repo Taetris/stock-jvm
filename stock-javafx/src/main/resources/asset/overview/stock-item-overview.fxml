@@ -4,10 +4,10 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<Tab text="Suppliers" xmlns:fx="http://javafx.com/fxml/1"
-     fx:controller="asset.overview.supplier.SupplierOverviewController">
+<Tab text="Items" xmlns:fx="http://javafx.com/fxml/1"
+     fx:controller="asset.overview.item.ItemOverviewController">
     <VBox>
-        <TableView fx:id="suppliersTable" VBox.vgrow="ALWAYS">
+        <TableView fx:id="itemsTable" VBox.vgrow="ALWAYS">
             <columns>
                 <TableColumn fx:id="idColumn" text="ID"/>
                 <TableColumn fx:id="nameColumn" text="Name"/>
@@ -22,8 +22,7 @@
             <padding>
                 <Insets top="5" right="5" bottom="5" left="5"/>
             </padding>
-            <Button fx:id="addSupplierButton" text="Add Supplier"/>
-            <TextField fx:id="searchSupplierTextField" promptText="Search For Supplier..."/>
+            <Button fx:id="addItemButton" text="Add Item"/>
         </HBox>
     </VBox>
 </Tab>

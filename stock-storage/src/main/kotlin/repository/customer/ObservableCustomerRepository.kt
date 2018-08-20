@@ -26,7 +26,7 @@ interface ObservableCustomerRepository : RepositoryObservable {
      * removal, observers are notified.
      *
      * @param customer [Customer]: customer to remove.
-     * @throws RepositoryException in the customer does not exist, or there was another issue with the removal.
+     * @throws RepositoryException in case the customer does not exist, or there was another issue with the removal.
      */
     @Throws(RepositoryException::class)
     fun removeCustomer(customer: Customer)

@@ -13,8 +13,6 @@ class StockMenuController {
     @FXML
     private lateinit var saveAndCloseMenuItem: MenuItem
     @FXML
-    private lateinit var calculateStockMenuItem: MenuItem
-    @FXML
     private lateinit var aboutMenuItem: MenuItem
 
     @FXML
@@ -23,7 +21,6 @@ class StockMenuController {
 
         exportToPdfMenuItem.setOnAction { logger.info("exportToPdf") }
         saveAndCloseMenuItem.setOnAction { logger.info("saveAndClose") }
-        calculateStockMenuItem.setOnAction { logger.info("calculateStock") }
         aboutMenuItem.setOnAction { logger.info("about") }
     }
 }

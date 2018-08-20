@@ -1,9 +1,9 @@
-package asset.add.supplier.interactor
+package asset.add.item.interactor
 
 /**
  * Output of the insertion interactor.
  */
-interface AddSupplierOutput {
+interface AddItemOutput {
 
     /**
      * Notifies that the insertion was successful.
@@ -11,7 +11,7 @@ interface AddSupplierOutput {
     fun onInsertionSuccessful()
 
     /**
-     * Notifies that there was an error during the insertion of a supplier. Error message is passed through [error].
+     * Notifies that there was an error during the insertion of an item. Error message is passed through [error].
      */
     fun onInsertionFailed(error: String)
 }
