@@ -3,6 +3,8 @@ package asset.overview.customer
 import asset.add.customer.AddCustomerController
 import asset.overview.customer.interactor.GetAllCustomersInteractor
 import asset.overview.customer.interactor.GetAllCustomersOutput
+import asset.overview.customer.interactor.RemoveCustomerInteractor
+import asset.overview.customer.interactor.RemoveCustomersOutput
 import asset.subject.customer.CustomerObserver
 import asset.subject.customer.CustomerSubject
 import javafx.beans.property.SimpleIntegerProperty
@@ -16,8 +18,10 @@ import javafx.scene.control.TableView
 import javafx.stage.Stage
 import org.slf4j.LoggerFactory
 import repository.customer.Customer
+import util.Dialog
 
-class CustomerOverviewController : GetAllCustomersOutput, CustomerObserver {
+class CustomerOverviewController : CustomerObserver,
+        GetAllCustomersOutput, RemoveCustomersOutput {
 
     private val logger = LoggerFactory.getLogger(CustomerOverviewController::class.java)
 
@@ -34,8 +38,13 @@ class CustomerOverviewController : GetAllCustomersOutput, CustomerObserver {
 
     @FXML
     private lateinit var addCustomerButton: Button
+    @FXML
+    private lateinit var removeCustomerButton: Button
+    @FXML
+    private lateinit var editCustomerButton: Button
 
-    private val interactor = GetAllCustomersInteractor(this)
+    private val getAllCustomersInteractor = GetAllCustomersInteractor(this)
+    private val removeCustomerInteractor = RemoveCustomerInteractor(this)
     private val subject = CustomerSubject()
 
     @FXML
@@ -58,13 +67,17 @@ class CustomerOverviewController : GetAllCustomersOutput, CustomerObserver {
         customersTable.placeholder = Label(error)
     }
 
+    override fun onRemovalFailed(error: String) {
+        Dialog.showErrorDialog(header = "Failed to remove customer", content = error)
+    }
+
     override fun onCustomersChanged() {
         fetchCustomers()
     }
 
     private fun fetchCustomers() {
         customersTable.items.clear()
-        interactor.getAllCustomers()
+        getAllCustomersInteractor.getAllCustomers()
     }
 
     private fun initializeListeners() {
@@ -72,6 +85,13 @@ class CustomerOverviewController : GetAllCustomersOutput, CustomerObserver {
             val stage = Stage()
             stage.scene = AddCustomerController.create()
             stage.showAndWait()
+        }
+
+        removeCustomerButton.setOnAction {
+            val selectedItem = customersTable.selectionModel.selectedItem
+            selectedItem?.let {
+                removeCustomerInteractor.removeCustomer(selectedItem)
+            }
         }
 
         subject.register(this)

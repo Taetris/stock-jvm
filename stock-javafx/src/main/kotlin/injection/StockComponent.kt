@@ -3,6 +3,7 @@ package injection
 import asset.add.customer.interactor.AddCustomerInteractor
 import asset.add.item.interactor.AddItemInteractor
 import asset.overview.customer.interactor.GetAllCustomersInteractor
+import asset.overview.customer.interactor.RemoveCustomerInteractor
 import asset.overview.item.interactor.GetAllItemsInteractor
 import asset.subject.customer.CustomerSubject
 import asset.subject.item.ItemSubject
@@ -24,4 +25,6 @@ interface StockComponent {
     fun inject(customerSubject: CustomerSubject)
 
     fun inject(itemSubject: ItemSubject)
+
+    fun inject(removeCustomerInteractor: RemoveCustomerInteractor)
 }
