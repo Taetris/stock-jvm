@@ -1,7 +1,7 @@
-package asset.subject.customer
+package asset.customer.subject
 
 /**
- * Observer to get notified when customer repository changes.
+ * Observer to get notified when asset.customer repository changes.
  */
 interface CustomerObserver {
 
