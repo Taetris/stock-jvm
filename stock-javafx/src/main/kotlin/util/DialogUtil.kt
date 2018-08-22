@@ -2,7 +2,7 @@ package util
 
 import javafx.scene.control.Alert
 
-object Dialog {
+object DialogUtil {
 
     fun showErrorDialog(title: String = "Error", header: String, content: String) {
         val alert = Alert(Alert.AlertType.ERROR)
