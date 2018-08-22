@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <Tab text="Kupci" xmlns:fx="http://javafx.com/fxml/1"
-     fx:controller="asset.overview.customer.CustomerOverviewController">
+     fx:controller="asset.customer.overview.CustomerOverviewController">
     <VBox>
         <TableView fx:id="customersTable" VBox.vgrow="ALWAYS">
             <columns>
@@ -22,9 +22,9 @@
             <padding>
                 <Insets top="5" right="5" bottom="5" left="5"/>
             </padding>
-            <Button fx:id="addCustomerButton" text="Unesi"/>
             <Button fx:id="removeCustomerButton" text="Izbriši"/>
             <Button fx:id="editCustomerButton" text="Izmijeni"/>
+            <Button fx:id="addCustomerButton" text="Unesi"/>
         </HBox>
     </VBox>
 </Tab>

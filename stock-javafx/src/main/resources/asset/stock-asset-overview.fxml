@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.VBox?>
 <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS" xmlns:fx="http://javafx.com/fxml/1">
 
-    <fx:include source="stock-customer-overview.fxml"/>
-    <fx:include source="stock-item-overview.fxml"/>
+    <fx:include source="customer/stock-customer-overview.fxml"/>
+    <fx:include source="item/stock-item-overview.fxml"/>
 
 </TabPane>
