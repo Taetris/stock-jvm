@@ -4,8 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<Tab text="Items" xmlns:fx="http://javafx.com/fxml/1"
-     fx:controller="asset.customer.overview.item.ItemOverviewController">
+<Tab text="Items" xmlns:fx="http://javafx.com/fxml/1">
     <VBox>
         <TableView fx:id="itemsTable" VBox.vgrow="ALWAYS">
             <columns>

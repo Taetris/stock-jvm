@@ -36,7 +36,7 @@ class ManageCustomerController {
         }
 
         private fun createView(customerId: Int = UNSUPPORTED_CUSTOMER_ID): Pane {
-            val loader = FXMLLoader(ManageCustomerController::class.java.getResource("../../../../resources/asset/asset.customer.manage/stock-asset.customer.manage-asset.customer.fxml"))
+            val loader = FXMLLoader(ManageCustomerController::class.java.getResource("../../../../resources/asset/customer/stock-manage-customer.fxml"))
             val view = loader.load<Pane>()
             val controller = loader.getController<ManageCustomerController>()
             controller.initialize(customerId)
