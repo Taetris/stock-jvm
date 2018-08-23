@@ -17,15 +17,15 @@ class AddCustomerUseCase @Inject constructor() {
     lateinit var customerRepository: ObservableCustomerRepository
 
     @Throws(UseCaseException::class)
-    suspend fun addNewCustomer(id: Int, name: String, accountNumber: String, address: String) {
+    suspend fun addNewCustomer(id: Int, name: String, idNumber: String, pdvNumber: String, address: String) {
         withContext(CommonPool) {
-            val customer = Customer(id, name, accountNumber, address)
-            logger.info("Adding new asset.customer '$customer'")
+            val customer = Customer(id, name, idNumber, pdvNumber, address)
+            logger.info("Adding new customer '$customer'")
 
             try {
                 customerRepository.insertCustomer(customer)
             } catch (e: RepositoryException) {
-                val message = "Failed to add a new asset.customer."
+                val message = "Failed to add a new customer."
                 logger.info(message, e)
                 throw UseCaseException(message, e)
             }

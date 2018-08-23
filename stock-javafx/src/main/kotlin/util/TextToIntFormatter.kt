@@ -5,9 +5,9 @@ import javafx.util.converter.IntegerStringConverter
 import java.util.function.UnaryOperator
 
 /**
- * Extended text formatter which allows numbers only.,
+ * Extended text formatter which allows numbers only. Used to convert the end result to [Int].
  */
-class NumberTextFormatter : TextFormatter<Int>(
+class TextToIntFormatter : TextFormatter<Int>(
         IntegerStringConverter(),
         0,
         UnaryOperator { value ->

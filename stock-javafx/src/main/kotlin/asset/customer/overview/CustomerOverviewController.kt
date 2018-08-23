@@ -38,9 +38,11 @@ class CustomerOverviewController : CustomerObserver {
     @FXML
     private lateinit var nameColumn: TableColumn<Customer, String>
     @FXML
-    private lateinit var accountNumberColumn: TableColumn<Customer, String>
-    @FXML
     private lateinit var addressColumn: TableColumn<Customer, String>
+    @FXML
+    private lateinit var idNumberColumn: TableColumn<Customer, String>
+    @FXML
+    private lateinit var pdvNumberColumn: TableColumn<Customer, String>
     @FXML
     private lateinit var addCustomerButton: Button
     @FXML
@@ -95,7 +97,8 @@ class CustomerOverviewController : CustomerObserver {
     private fun initializeTable() {
         idColumn.setCellValueFactory { param -> SimpleIntegerProperty(param.value.id) }
         nameColumn.setCellValueFactory { param -> SimpleStringProperty(param.value.name) }
-        accountNumberColumn.setCellValueFactory { param -> SimpleStringProperty(param.value.accountNumber) }
+        idNumberColumn.setCellValueFactory { param -> SimpleStringProperty(param.value.idNumber) }
+        pdvNumberColumn.setCellValueFactory { param -> SimpleStringProperty(param.value.pdvNumber) }
         addressColumn.setCellValueFactory { param -> SimpleStringProperty(param.value.address) }
     }
 
@@ -103,7 +106,7 @@ class CustomerOverviewController : CustomerObserver {
         removeCustomerButton.isVisible = false
         editCustomerButton.isVisible = false
 
-        customersTable.selectionModel.selectedItemProperty().addListener { observable, oldValue, newValue ->
+        customersTable.selectionModel.selectedItemProperty().addListener { _, _, newValue ->
             logger.info("Changed selection to $newValue")
             newValue?.let {
                 removeCustomerButton.isVisible = true
@@ -133,9 +136,7 @@ class CustomerOverviewController : CustomerObserver {
             try {
                 removeCustomerUseCase.removeCustomer(selectedCustomer)
             } catch (e: UseCaseException) {
-                DialogUtil.showErrorDialog(
-                        header = "Failed to remove asset.customer",
-                        content = "Failed to remove asset.customer with id '${selectedCustomer.id}. Error: ${e.message}")
+                DialogUtil.showErrorDialog(header = "Failed to remove customer", content = e.message)
             }
         }
     }

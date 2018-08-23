@@ -17,10 +17,10 @@ class UpdateCustomerUseCase @Inject constructor() {
     lateinit var customerRepository: ObservableCustomerRepository
 
     @Throws(UseCaseException::class)
-    suspend fun updateCustomer(id: Int, name: String, accountNumber: String, address: String) {
+    suspend fun updateCustomer(id: Int, name: String, idNumber: String, pdvNumber: String, address: String) {
         withContext(CommonPool) {
-            val customer = Customer(id, name, accountNumber, address)
-            logger.info("Updating the asset.customer with the id '${customer.id} with data '$customer'")
+            val customer = Customer(id, name, idNumber, pdvNumber, address)
+            logger.info("Updating the customer with the id '${customer.id} with data '$customer'")
 
             val customerExists = customerRepository.containsCustomer(customer.id)
             if (!customerExists) {
@@ -30,7 +30,7 @@ class UpdateCustomerUseCase @Inject constructor() {
             try {
                 customerRepository.updateCustomer(customer)
             } catch (e: RepositoryException) {
-                val message = "Failed to update the asset.customer with id '${customer.id}."
+                val message = "Failed to update the customer with id '${customer.id}."
                 logger.info(message, e)
                 throw UseCaseException(message, e)
             }

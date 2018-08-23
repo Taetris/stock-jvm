@@ -12,10 +12,12 @@
     <TextField fx:id="idTextField"/>
     <Label text="Naziv Kupca"/>
     <TextField fx:id="nameTextField"/>
-    <Label text="Broj Računa"/>
-    <TextField fx:id="accountNumberTextField"/>
     <Label text="Adresa"/>
     <TextField fx:id="addressTextField"/>
+    <Label text="ID Broj"/>
+    <TextField fx:id="idNumberTextField"/>
+    <Label text="PDV Broj"/>
+    <TextField fx:id="pdvNumberTextField"/>
     <HBox fillHeight="false" spacing="10.0">
         <VBox.margin>
             <Insets top="20.0"/>

@@ -11,8 +11,9 @@
             <columns>
                 <TableColumn fx:id="idColumn" text="ID"/>
                 <TableColumn fx:id="nameColumn" text="Naziv Kupca"/>
-                <TableColumn fx:id="accountNumberColumn" text="Broj Računa"/>
                 <TableColumn fx:id="addressColumn" text="Adresa"/>
+                <TableColumn fx:id="idNumberColumn" text="ID Broj"/>
+                <TableColumn fx:id="pdvNumberColumn" text="PDV Broj"/>
             </columns>
             <columnResizePolicy>
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>

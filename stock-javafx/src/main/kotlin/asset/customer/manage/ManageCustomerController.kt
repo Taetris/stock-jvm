@@ -16,7 +16,8 @@ import javafx.stage.Stage
 import kotlinx.coroutines.experimental.launch
 import org.slf4j.LoggerFactory
 import util.DialogUtil
-import util.NumberTextFormatter
+import util.NumberOnlyTextFormatter
+import util.TextToIntFormatter
 import javax.inject.Inject
 
 class ManageCustomerController {
@@ -62,16 +63,18 @@ class ManageCustomerController {
     @FXML
     private lateinit var nameTextField: TextField
     @FXML
-    private lateinit var accountNumberTextField: TextField
-    @FXML
     private lateinit var addressTextField: TextField
+    @FXML
+    private lateinit var idNumberTextField: TextField
+    @FXML
+    private lateinit var pdvNumberTextField: TextField
     @FXML
     private lateinit var cancelButton: Button
     @FXML
     private lateinit var saveButton: Button
 
     private fun initialize(customerId: Int) {
-        logger.info("Initializing view for asset.customer id '$customerId'")
+        logger.info("Initializing view for customer id '$customerId'")
 
         initializeCommon()
 
@@ -83,7 +86,9 @@ class ManageCustomerController {
     }
 
     private fun initializeCommon() {
-        idTextField.textFormatter = NumberTextFormatter()
+        idTextField.textFormatter = TextToIntFormatter()
+        idNumberTextField.textFormatter = NumberOnlyTextFormatter()
+        pdvNumberTextField.textFormatter = NumberOnlyTextFormatter()
         cancelButton.setOnAction { (cancelButton.scene.window as Stage).close() }
     }
 
@@ -94,11 +99,12 @@ class ManageCustomerController {
                     addCustomerUseCase.addNewCustomer(
                             id = idTextField.text.toInt(),
                             name = nameTextField.text,
-                            accountNumber = accountNumberTextField.text,
+                            idNumber = idNumberTextField.text,
+                            pdvNumber = pdvNumberTextField.text,
                             address = addressTextField.text)
                     close()
                 } catch (e: UseCaseException) {
-                    DialogUtil.showErrorDialog(header = "Failed to insert asset.customer", content = "Some error")
+                    DialogUtil.showErrorDialog(header = "Failed to insert customer", content = e.message)
                 }
             }
         }
@@ -113,10 +119,11 @@ class ManageCustomerController {
                 fillInFields(
                         id = customer.id,
                         name = customer.name,
-                        accountNumber = customer.accountNumber,
+                        idNumber = customer.idNumber,
+                        pdvNumber = customer.pdvNumber,
                         address = customer.address)
             } catch (e: UseCaseException) {
-                DialogUtil.showErrorDialog(header = "Failed to get asset.customer", content = "Some error")
+                DialogUtil.showErrorDialog(header = "Failed to get customer", content = e.message)
             }
         }
 
@@ -126,20 +133,22 @@ class ManageCustomerController {
                     updateCustomerUseCase.updateCustomer(
                             id = idTextField.text.toInt(),
                             name = nameTextField.text,
-                            accountNumber = accountNumberTextField.text,
+                            idNumber = idNumberTextField.text,
+                            pdvNumber = pdvNumberTextField.text,
                             address = addressTextField.text)
                     close()
                 } catch (e: UseCaseException) {
-                    DialogUtil.showErrorDialog(header = "Failed to insert asset.customer", content = "Some error")
+                    DialogUtil.showErrorDialog(header = "Failed to insert customer", content = e.message)
                 }
             }
         }
     }
 
-    private fun fillInFields(id: Int, name: String, accountNumber: String, address: String) {
+    private fun fillInFields(id: Int, name: String, idNumber: String, pdvNumber: String, address: String) {
         idTextField.text = id.toString()
         nameTextField.text = name
-        accountNumberTextField.text = accountNumber
+        idNumberTextField.text = idNumber
+        pdvNumberTextField.text = pdvNumber
         addressTextField.text = address
     }
 

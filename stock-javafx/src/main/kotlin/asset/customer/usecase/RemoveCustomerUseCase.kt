@@ -19,12 +19,12 @@ class RemoveCustomerUseCase @Inject constructor() {
     @Throws(UseCaseException::class)
     suspend fun removeCustomer(customer: Customer) {
         withContext(CommonPool) {
-            logger.info("Removing asset.customer with id '${customer.id}")
+            logger.info("Removing customer with id '${customer.id}")
 
             try {
                 customerRepository.removeCustomer(customer)
             } catch (e: RepositoryException) {
-                val message = "Failed to remove the asset.customer with id '${customer.id}."
+                val message = "Failed to remove the customer with id '${customer.id}."
                 logger.info(message, e)
                 throw UseCaseException(message, e)
             }

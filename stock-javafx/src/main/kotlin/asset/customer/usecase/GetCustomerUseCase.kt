@@ -19,12 +19,12 @@ class GetCustomerUseCase @Inject constructor() {
     @Throws(UseCaseException::class)
     suspend fun getCustomer(id: Int) : Customer {
         return withContext(CommonPool) {
-            logger.info("Retrieving asset.customer with id '$id")
+            logger.info("Retrieving customer with id '$id")
 
             try {
                 return@withContext customerRepository.getCustomerById(id)
             } catch (e: RepositoryException) {
-                val message = "Failed to get asset.customer with id '$id'."
+                val message = "Failed to get customer with id '$id'."
                 logger.info(message, e)
                 throw UseCaseException(message, e)
             }
