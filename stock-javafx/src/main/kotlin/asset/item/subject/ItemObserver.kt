@@ -1,7 +1,7 @@
 package asset.item.subject
 
 /**
- * Observer to get notified when asset.item repository changes.
+ * Observer to get notified when item repository changes.
  */
 interface ItemObserver {
 

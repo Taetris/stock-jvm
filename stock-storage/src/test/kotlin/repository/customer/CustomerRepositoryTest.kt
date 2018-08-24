@@ -58,17 +58,18 @@ internal class CustomerRepositoryTest {
         customerRepository.insertCustomer(customer)
         assertThat(customerRepository.getCustomerById(1)).isEqualTo(customer)
 
-        val changedCustomer = Customer(1, "name2", "2", "address2")
+        val changedCustomer = Customer(1, "name2", "idNumber2", "pdvNumber2", "address2")
         customerRepository.updateCustomer(changedCustomer)
 
         assertThat(customerRepository.getCustomerById(1).name).isEqualTo("name2")
-        assertThat(customerRepository.getCustomerById(1).accountNumber).isEqualTo("2")
+        assertThat(customerRepository.getCustomerById(1).idNumber).isEqualTo("idNumber2")
+        assertThat(customerRepository.getCustomerById(1).pdvNumber).isEqualTo("pdvNumber2")
         assertThat(customerRepository.getCustomerById(1).address).isEqualTo("address2")
     }
 
     @Test
     fun shouldFailToUpdateNonExistingCustomer() {
-        val customer = Customer(1, "name2", "2", "address2")
+        val customer = createDummyCustomer(1)
         assertThrows(RepositoryException::class.java) { customerRepository.updateCustomer(customer) }
     }
 
@@ -123,5 +124,6 @@ internal class CustomerRepositoryTest {
         assertThat(customerRepository.getAllCustomers().size).isZero()
     }
 
-    private fun createDummyCustomer(id: Int): Customer = Customer(id, "name", "accountNumber", "address")
+    private fun createDummyCustomer(id: Int): Customer =
+            Customer(id, "name", "idNumber", "pdvNumber", "address")
 }

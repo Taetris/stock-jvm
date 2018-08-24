@@ -18,111 +18,117 @@ internal class ItemRepositoryTest {
     }
 
     @Test
-    fun shouldInsertNewSupplier() {
-        val supplier = createDummySupplier(1)
-        itemRepository.insertItem(supplier)
+    fun shouldInsertNewItem() {
+        val item = createDummyItem(1)
+        itemRepository.insertItem(item)
 
         assertThat(itemRepository.getAllItems().size).isOne()
-        assertThat(itemRepository.getItemById(1)).isEqualTo(supplier)
+        assertThat(itemRepository.getItemById(1)).isEqualTo(item)
     }
 
     @Test
-    fun shouldFailToInsertDuplicateSuppliers() {
-        val supplier = createDummySupplier(1)
+    fun shouldFailToInsertDuplicateItems() {
+        val item = createDummyItem(1)
 
-        itemRepository.insertItem(supplier)
-        assertThrows(RepositoryException::class.java) { itemRepository.insertItem(supplier) }
+        itemRepository.insertItem(item)
+        assertThrows(RepositoryException::class.java) { itemRepository.insertItem(item) }
     }
 
     @Test
-    fun shouldRemoveExistingSupplier() {
+    fun shouldRemoveExistingItem() {
         assertThat(itemRepository.getAllItems().size).isZero()
-        val supplier = createDummySupplier(1)
+        val item = createDummyItem(1)
 
-        itemRepository.insertItem(supplier)
+        itemRepository.insertItem(item)
 
-        itemRepository.removeItem(supplier)
+        itemRepository.removeItem(item)
         assertThat(itemRepository.getAllItems().size).isZero()
-        assertThat(itemRepository.containsItem(supplier.id)).isFalse()
+        assertThat(itemRepository.containsItem(item.id)).isFalse()
     }
 
     @Test
-    fun shouldFailToRemoveNonExistingSupplier() {
-        val supplier = createDummySupplier(1)
-        assertThrows(RepositoryException::class.java) { itemRepository.removeItem(supplier) }
+    fun shouldFailToRemoveNonExistingItem() {
+        val item = createDummyItem(1)
+        assertThrows(RepositoryException::class.java) { itemRepository.removeItem(item) }
     }
 
     @Test
-    fun shouldUpdateAnExistingSupplier() {
-        val supplier = createDummySupplier(1)
+    fun shouldUpdateAnExistingItem() {
+        val item = createDummyItem(1)
 
-        itemRepository.insertItem(supplier)
-        assertThat(itemRepository.getItemById(1)).isEqualTo(supplier)
+        itemRepository.insertItem(item)
+        assertThat(itemRepository.getItemById(1)).isEqualTo(item)
 
-        val changedSupplier = Item(1, "name2", "2", "address2")
-        itemRepository.updateItem(changedSupplier)
+        val changedItem = Item(1, "name2", Dimension(1.0, 1.0, Unit.M2), "description2", 2, 2.0)
+        itemRepository.updateItem(changedItem)
 
         assertThat(itemRepository.getItemById(1).name).isEqualTo("name2")
-        assertThat(itemRepository.getItemById(1).accountNumber).isEqualTo("2")
-        assertThat(itemRepository.getItemById(1).address).isEqualTo("address2")
+        assertThat(itemRepository.getItemById(1).description).isEqualTo("description2")
+        assertThat(itemRepository.getItemById(1).amount).isEqualTo(2)
+        assertThat(itemRepository.getItemById(1).pricePerUnit).isEqualTo(2.0)
     }
 
     @Test
-    fun shouldFailToUpdateNonExistingSupplier() {
-        val supplier = Item(1, "name2", "2", "address2")
-        assertThrows(RepositoryException::class.java) { itemRepository.updateItem(supplier) }
+    fun shouldFailToUpdateNonExistingItem() {
+        val item = createDummyItem(1)
+        assertThrows(RepositoryException::class.java) { itemRepository.updateItem(item) }
     }
 
     @Test
-    fun shouldContainSupplier() {
-        val supplier = createDummySupplier(1)
+    fun shouldContainItem() {
+        val item = createDummyItem(1)
 
-        itemRepository.insertItem(supplier)
+        itemRepository.insertItem(item)
         assertThat(itemRepository.containsItem(1)).isTrue()
     }
 
     @Test
-    fun shouldNotContainSupplier() {
-        val supplier = createDummySupplier(1)
+    fun shouldNotContainItem() {
+        val item = createDummyItem(1)
 
-        itemRepository.insertItem(supplier)
+        itemRepository.insertItem(item)
         assertThat(itemRepository.containsItem(2)).isFalse()
     }
 
     @Test
-    fun shouldGetExistingSupplierById() {
-        val supplier = createDummySupplier(1)
+    fun shouldGetExistingItemById() {
+        val item = createDummyItem(1)
 
-        itemRepository.insertItem(supplier)
-        assertThat(itemRepository.getItemById(1)).isEqualTo(supplier)
+        itemRepository.insertItem(item)
+        assertThat(itemRepository.getItemById(1)).isEqualTo(item)
     }
 
     @Test
-    fun shouldFailToGetNonExistingSupplierById() {
-        val supplier = createDummySupplier(1)
+    fun shouldFailToGetNonExistingItemById() {
+        val item = createDummyItem(1)
 
-        itemRepository.insertItem(supplier)
+        itemRepository.insertItem(item)
         assertThrows(RepositoryException::class.java) { itemRepository.getItemById(2)}
     }
 
     @Test
-    fun shouldGetAllSuppliers() {
-        val supplier1 = createDummySupplier(1)
-        val supplier2 = createDummySupplier(2)
+    fun shouldGetAllItems() {
+        val item1 = createDummyItem(1)
+        val item2 = createDummyItem(2)
 
-        itemRepository.insertItem(supplier1)
-        itemRepository.insertItem(supplier2)
+        itemRepository.insertItem(item1)
+        itemRepository.insertItem(item2)
 
-        val suppliers = itemRepository.getAllItems()
-        assertThat(suppliers.size).isEqualTo(2)
-        assertThat(suppliers[0]).isEqualTo(supplier1)
-        assertThat(suppliers[1]).isEqualTo(supplier2)
+        val items = itemRepository.getAllItems()
+        assertThat(items.size).isEqualTo(2)
+        assertThat(items[0]).isEqualTo(item1)
+        assertThat(items[1]).isEqualTo(item2)
     }
 
     @Test
-    fun shouldGetNoSuppliersOnNoneInserted() {
+    fun shouldGetNoItemsOnNoneInserted() {
         assertThat(itemRepository.getAllItems().size).isZero()
     }
 
-    private fun createDummySupplier(id: Int): Item = Item(id, "name", "accountNumber", "address")
+    private fun createDummyItem(id: Int): Item = Item(id, 
+            "name", 
+            Dimension(1.0, 1.0, Unit.M2), 
+            "description",
+            1,
+            1.0)
 }
