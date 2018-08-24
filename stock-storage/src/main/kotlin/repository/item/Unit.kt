@@ -3,13 +3,13 @@ package repository.item
 /**
  * Defines the unit of measure.
  */
-enum class Unit {
+enum class Unit(val value: String) {
     /**
      * Meter.
      */
-    M,
+    M("m"),
     /**
      * Square meter.
      */
-    M2
+    M2("m2")
 }

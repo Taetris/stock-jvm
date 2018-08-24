@@ -52,11 +52,11 @@ class ManageCustomerController {
     private val logger = LoggerFactory.getLogger(ManageCustomerController::class.java)
 
     @Inject
-    lateinit var addCustomerUseCase: AddCustomerUseCase
+    internal lateinit var addCustomerUseCase: AddCustomerUseCase
     @Inject
-    lateinit var updateCustomerUseCase: UpdateCustomerUseCase
+    internal lateinit var updateCustomerUseCase: UpdateCustomerUseCase
     @Inject
-    lateinit var getCustomerUseCase: GetCustomerUseCase
+    internal lateinit var getCustomerUseCase: GetCustomerUseCase
 
     @FXML
     private lateinit var idTextField: TextField

@@ -21,4 +21,8 @@ class Dimension(val width: Double, val height: Double, val unit: Unit) {
             Unit.M2 -> width * height
         }
     }
+
+    override fun toString(): String {
+        return "$width * $height"
+    }
 }

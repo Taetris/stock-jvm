@@ -15,6 +15,15 @@ class ObservableCustomerRepositoryMock : ObservableCustomerRepository {
     private val customers: MutableList<Customer> = ArrayList()
     private val observers: MutableList<RepositoryObserver> = ArrayList()
 
+    init {
+        customers.add(Customer(1, "Name1", "idNumber1", "pdvNumber1", "address1"))
+        customers.add(Customer(2, "Name2", "idNumber2", "pdvNumber2", "address2"))
+        customers.add(Customer(3, "Name3", "idNumber3", "pdvNumber3", "address3"))
+        customers.add(Customer(4, "Name4", "idNumber4", "pdvNumber4", "address4"))
+        customers.add(Customer(5, "Name5", "idNumber5", "pdvNumber5", "address5"))
+        customers.add(Customer(6, "Name6", "idNumber6", "pdvNumber6", "address6"))
+    }
+
     override fun insertCustomer(customer: Customer) {
         if (!containsCustomer(customer.id)) {
             customers.add(customer)
