@@ -9,9 +9,9 @@ import repository.item.Item
 import repository.item.ObservableItemRepository
 import javax.inject.Inject
 
-class GetAllItemsInteractor @Inject constructor() {
+class GetAllItemsUseCase @Inject constructor() {
 
-    private val logger = LoggerFactory.getLogger(GetAllItemsInteractor::class.java)
+    private val logger = LoggerFactory.getLogger(GetAllItemsUseCase::class.java)
 
     @Inject
     internal lateinit var itemRepository: ObservableItemRepository
@@ -25,7 +25,7 @@ class GetAllItemsInteractor @Inject constructor() {
                 return@withContext itemRepository.getAllItems()
             } catch (e: RepositoryException) {
                 val message = "Failed to retrieve all items."
-                logger.info(message, e)
+                logger.error(message, e)
                 throw UseCaseException(message, e)
             }
         }

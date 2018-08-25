@@ -5,7 +5,8 @@ import application.executor.UI
 import application.usecase.UseCaseException
 import asset.item.subject.ItemObserver
 import asset.item.subject.ItemSubject
-import asset.item.usecase.GetAllItemsInteractor
+import asset.item.usecase.GetAllItemsUseCase
+import asset.item.usecase.RemoveItemUseCase
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.beans.property.SimpleStringProperty
@@ -18,6 +19,7 @@ import javafx.scene.control.TableView
 import kotlinx.coroutines.experimental.launch
 import org.slf4j.LoggerFactory
 import repository.item.Item
+import util.DialogUtil
 import javax.inject.Inject
 
 class ItemOverviewController : ItemObserver {
@@ -54,7 +56,9 @@ class ItemOverviewController : ItemObserver {
     private lateinit var removeItemButton: Button
 
     @Inject
-    internal lateinit var getAllItemsInteractor: GetAllItemsInteractor
+    internal lateinit var getAllItemsUseCase: GetAllItemsUseCase
+    @Inject
+    internal lateinit var removeItemUseCase: RemoveItemUseCase
     @Inject
     internal lateinit var subject: ItemSubject
 
@@ -73,6 +77,13 @@ class ItemOverviewController : ItemObserver {
     }
 
     private fun initializeListeners() {
+        removeItemButton.setOnAction {
+            val selectedItem = itemsTable.selectionModel.selectedItem
+            removeItem(selectedItem)
+        }
+
+        setButtonVisibility()
+
         subject.register(this)
     }
 
@@ -88,15 +99,37 @@ class ItemOverviewController : ItemObserver {
         totalPriceWithoutTaxColumn.setCellValueFactory { param -> SimpleDoubleProperty(param.value.calculateTotalPriceWithoutTax()) }
     }
 
+    private fun setButtonVisibility() {
+        removeItemButton.isVisible = false
+
+        itemsTable.selectionModel.selectedItemProperty().addListener { _, _, newValue ->
+            newValue?.let {
+                removeItemButton.isVisible = true
+            } ?: run {
+                removeItemButton.isVisible = false
+            }
+        }
+    }
+
     private fun fetchItems() {
         itemsTable.items.clear()
 
         launch(UI) {
             try {
-                val items = getAllItemsInteractor.getAllItems()
+                val items = getAllItemsUseCase.getAllItems()
                 itemsTable.items = FXCollections.observableArrayList(items)
             } catch (e: UseCaseException) {
                 itemsTable.placeholder = Label("Failed to retrieve data. Error: ${e.message}.")
+            }
+        }
+    }
+
+    private fun removeItem(item: Item) {
+        launch(UI) {
+            try {
+                removeItemUseCase.removeItem(item)
+            } catch (e: UseCaseException) {
+                DialogUtil.showErrorDialog(header = "Failed to remove item", content = e.message)
             }
         }
     }

@@ -25,7 +25,7 @@ class GetAllCustomersUseCase @Inject constructor() {
                 return@withContext customerRepository.getAllCustomers()
             } catch (e: RepositoryException) {
                 val message = "Failed to retrieve all customers."
-                logger.info(message, e)
+                logger.error(message, e)
                 throw UseCaseException(message, e)
             }
         }

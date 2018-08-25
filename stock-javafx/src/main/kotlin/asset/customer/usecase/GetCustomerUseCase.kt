@@ -14,7 +14,7 @@ class GetCustomerUseCase @Inject constructor() {
     private val logger = LoggerFactory.getLogger(GetCustomerUseCase::class.java)
 
     @Inject
-    lateinit var customerRepository: ObservableCustomerRepository
+    internal lateinit var customerRepository: ObservableCustomerRepository
 
     @Throws(UseCaseException::class)
     suspend fun getCustomer(id: Int) : Customer {
@@ -25,7 +25,7 @@ class GetCustomerUseCase @Inject constructor() {
                 return@withContext customerRepository.getCustomerById(id)
             } catch (e: RepositoryException) {
                 val message = "Failed to get customer with id '$id'."
-                logger.info(message, e)
+                logger.error(message, e)
                 throw UseCaseException(message, e)
             }
         }

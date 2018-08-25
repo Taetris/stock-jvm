@@ -14,7 +14,7 @@ class UpdateCustomerUseCase @Inject constructor() {
     private val logger = LoggerFactory.getLogger(UpdateCustomerUseCase::class.java)
 
     @Inject
-    lateinit var customerRepository: ObservableCustomerRepository
+    internal lateinit var customerRepository: ObservableCustomerRepository
 
     @Throws(UseCaseException::class)
     suspend fun updateCustomer(id: Int, name: String, idNumber: String, pdvNumber: String, address: String) {
@@ -31,7 +31,7 @@ class UpdateCustomerUseCase @Inject constructor() {
                 customerRepository.updateCustomer(customer)
             } catch (e: RepositoryException) {
                 val message = "Failed to update the customer with id '${customer.id}."
-                logger.info(message, e)
+                logger.error(message, e)
                 throw UseCaseException(message, e)
             }
         }

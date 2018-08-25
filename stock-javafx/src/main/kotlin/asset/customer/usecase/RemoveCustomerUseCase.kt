@@ -25,7 +25,7 @@ class RemoveCustomerUseCase @Inject constructor() {
                 customerRepository.removeCustomer(customer)
             } catch (e: RepositoryException) {
                 val message = "Failed to remove the customer with id '${customer.id}."
-                logger.info(message, e)
+                logger.error(message, e)
                 throw UseCaseException(message, e)
             }
         }
