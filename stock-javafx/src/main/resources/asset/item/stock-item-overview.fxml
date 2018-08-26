@@ -27,7 +27,7 @@
                 <Insets top="5" right="5" bottom="5" left="5"/>
             </padding>
             <Button fx:id="removeItemButton" text="Izbriši"/>
-            <Button fx:id="addItemButton" text="Ulaz"/>
+            <Button fx:id="manageItemButton" text="Ulaz"/>
         </HBox>
     </VBox>
 </Tab>

@@ -3,25 +3,31 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<VBox spacing="5.0" xmlns:fx="http://javafx.com/fxml">
+<VBox spacing="5.0" xmlns:fx="http://javafx.com/fxml" fx:controller="asset.item.manage.add.AddItemController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
     <Label text="ID"/>
     <TextField fx:id="idTextField"/>
-    <Label text="Name"/>
+    <Label text="Naziv Robe"/>
     <TextField fx:id="nameTextField"/>
-    <Label text="Account Number"/>
-    <TextField fx:id="accountNumberTextField"/>
-    <Label text="Address"/>
-    <TextField fx:id="addressTextField"/>
+    <Label text="Dimenzija"/>
+    <TextField fx:id="dimensionTextField"/>
+    <Label text="Opis"/>
+    <TextField fx:id="descriptionTextField"/>
+    <Label text="Ukupno"/>
+    <TextField fx:id="amountTextField"/>
+    <Label text="JM"/>
+    <TextField fx:id="unitTextField"/>
+    <Label text="V.P.C"/>
+    <TextField fx:id="pricePerUnitTextField"/>
     <HBox fillHeight="false" spacing="10.0">
         <VBox.margin>
             <Insets top="20.0"/>
         </VBox.margin>
         <Button fx:id="cancelButton" cancelButton="true" maxWidth="1.7976931348623157E308"
-                mnemonicParsing="false" text="Cancel" HBox.hgrow="ALWAYS"/>
-        <Button fx:id="addButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Add"
+                mnemonicParsing="false" text="Odustani" HBox.hgrow="ALWAYS"/>
+        <Button fx:id="addButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Spremi"
                 HBox.hgrow="ALWAYS"/>
     </HBox>
 </VBox>

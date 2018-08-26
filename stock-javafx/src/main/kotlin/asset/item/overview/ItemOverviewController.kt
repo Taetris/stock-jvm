@@ -3,6 +3,7 @@ package asset.item.overview
 import application.StockApplication
 import application.executor.UI
 import application.usecase.UseCaseException
+import asset.item.manage.ManageItem
 import asset.item.subject.ItemObserver
 import asset.item.subject.ItemSubject
 import asset.item.usecase.GetAllItemsUseCase
@@ -16,6 +17,7 @@ import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
+import javafx.stage.Stage
 import kotlinx.coroutines.experimental.launch
 import org.slf4j.LoggerFactory
 import repository.item.Item
@@ -51,7 +53,7 @@ class ItemOverviewController : ItemObserver {
     @FXML
     private lateinit var totalPriceWithoutTaxColumn: TableColumn<Item, Number>
     @FXML
-    private lateinit var addItemButton: Button
+    private lateinit var manageItemButton: Button
     @FXML
     private lateinit var removeItemButton: Button
 
@@ -77,6 +79,13 @@ class ItemOverviewController : ItemObserver {
     }
 
     private fun initializeListeners() {
+        manageItemButton.setOnAction {
+            val stage = Stage()
+            val scene = ManageItem.createView()
+            stage.scene = scene
+            stage.show()
+        }
+
         removeItemButton.setOnAction {
             val selectedItem = itemsTable.selectionModel.selectedItem
             removeItem(selectedItem)

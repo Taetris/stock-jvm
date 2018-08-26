@@ -1,15 +1,11 @@
-package util
+package asset.item.manage.add
 
 import javafx.scene.control.TextFormatter
 import javafx.util.StringConverter
 import java.util.function.UnaryOperator
 
-/**
- * Extended text formatter which allows numbers only. Used to convert the end result to [Int].
- */
-class NumberOnlyTextFormatter : TextFormatter<String> (
-        object: StringConverter<String>() {
-
+class DimensionTextFormatter : TextFormatter<String>(
+        object : StringConverter<String>() {
             override fun toString(`object`: String?): String {
                 return `object`.toString()
             }
@@ -20,8 +16,8 @@ class NumberOnlyTextFormatter : TextFormatter<String> (
         },
         "",
         UnaryOperator { value ->
-            val newText : String = value.controlNewText
-            return@UnaryOperator if (newText.matches(NUMBER_ONLY_REGEX)) {
+            val newText = value.controlNewText
+            return@UnaryOperator if (newText.matches(DIMENSION_REGEX)) {
                 value
             } else {
                 null
@@ -30,6 +26,6 @@ class NumberOnlyTextFormatter : TextFormatter<String> (
 
     companion object {
 
-        private val NUMBER_ONLY_REGEX = Regex("([1-9][0-9]*)?")
+        private val DIMENSION_REGEX = Regex("([0-9]*(\\.[0-9]*)?(\\*[0-9]*(\\.[0-9]*)?)?)?")
     }
 }
