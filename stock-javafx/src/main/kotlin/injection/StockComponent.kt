@@ -2,7 +2,7 @@ package injection
 
 import asset.customer.manage.ManageCustomerController
 import asset.customer.overview.CustomerOverviewController
-import asset.item.manage.add.AddItemController
+import asset.item.manage.ManageItemController
 import asset.item.overview.ItemOverviewController
 import dagger.Component
 import javax.inject.Singleton
@@ -17,5 +17,5 @@ interface StockComponent {
 
     fun inject(itemOverviewController: ItemOverviewController)
 
-    fun inject(addItemController: AddItemController)
+    fun inject(manageItemController: ManageItemController)
 }

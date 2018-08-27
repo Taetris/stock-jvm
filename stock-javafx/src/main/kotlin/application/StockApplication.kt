@@ -8,12 +8,13 @@ import javafx.fxml.FXMLLoader
 import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.stage.Stage
+import java.util.*
 
 class StockApplication : Application() {
 
     override fun start(primaryStage: Stage?) {
         stockComponent = DaggerStockComponent.create()
-        val main = FXMLLoader.load<Parent>(StockApplication::class.java.getResource("../../resources/main/stock-main.fxml"))
+        val main = FXMLLoader.load<Parent>(javaClass.classLoader.getResource("main/stock-main.fxml"))
         val scene = Scene(main, WINDOW_WIDTH, WINDOW_HEIGHT)
         primaryStage?.scene = scene
         primaryStage?.setOnCloseRequest {
@@ -32,6 +33,7 @@ class StockApplication : Application() {
 
         @JvmStatic
         fun main(args: Array<String>) {
+            Locale.setDefault(Locale("bs"))
             launch(StockApplication::class.java)
         }
     }

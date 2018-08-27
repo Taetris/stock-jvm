@@ -82,8 +82,10 @@ class ItemOverviewController : ItemObserver {
         manageItemButton.setOnAction {
             val stage = Stage()
             val scene = ManageItem.createView()
-            stage.scene = scene
-            stage.show()
+            if (scene != null) {
+                stage.scene = scene
+                stage.show()
+            }
         }
 
         removeItemButton.setOnAction {

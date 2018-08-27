@@ -3,21 +3,21 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<VBox spacing="5.0" xmlns:fx="http://javafx.com/fxml" fx:controller="asset.item.manage.add.AddItemController">
+<VBox fx:id="parentBox" spacing="5.0" xmlns:fx="http://javafx.com/fxml" fx:controller="asset.item.manage.ManageItemController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
     <Label text="ID"/>
     <TextField fx:id="idTextField"/>
-    <Label text="Naziv Robe"/>
+    <Label text="Naziv Robe" fx:id="nameLabel"/>
     <TextField fx:id="nameTextField"/>
-    <Label text="Dimenzija"/>
+    <Label text="Dimenzija" fx:id="dimensionLabel"/>
     <TextField fx:id="dimensionTextField"/>
-    <Label text="Opis"/>
+    <Label text="Opis" fx:id="descriptionLabel"/>
     <TextField fx:id="descriptionTextField"/>
     <Label text="Ukupno"/>
     <TextField fx:id="amountTextField"/>
-    <Label text="JM"/>
+    <Label text="JM" fx:id="unitLabel"/>
     <TextField fx:id="unitTextField"/>
     <Label text="V.P.C"/>
     <TextField fx:id="pricePerUnitTextField"/>
@@ -27,7 +27,7 @@
         </VBox.margin>
         <Button fx:id="cancelButton" cancelButton="true" maxWidth="1.7976931348623157E308"
                 mnemonicParsing="false" text="Odustani" HBox.hgrow="ALWAYS"/>
-        <Button fx:id="addButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Spremi"
+        <Button fx:id="saveButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Spremi"
                 HBox.hgrow="ALWAYS"/>
     </HBox>
 </VBox>
