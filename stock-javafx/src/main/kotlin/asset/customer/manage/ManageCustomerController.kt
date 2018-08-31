@@ -1,5 +1,6 @@
 package asset.customer.manage
 
+import application.ResourceLoader
 import application.StockApplication
 import application.executor.UI
 import application.usecase.UseCaseException
@@ -7,7 +8,6 @@ import asset.customer.usecase.AddCustomerUseCase
 import asset.customer.usecase.GetCustomerUseCase
 import asset.customer.usecase.UpdateCustomerUseCase
 import javafx.fxml.FXML
-import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
 import javafx.scene.control.Button
 import javafx.scene.control.TextField
@@ -15,9 +15,9 @@ import javafx.scene.layout.Pane
 import javafx.stage.Stage
 import kotlinx.coroutines.experimental.launch
 import org.slf4j.LoggerFactory
-import util.DialogUtil
-import util.NumberOnlyTextFormatter
-import util.TextToIntFormatter
+import view.dialog.DialogUtil
+import view.formatter.NumberOnlyTextFormatter
+import view.formatter.TextToIntFormatter
 import javax.inject.Inject
 
 class ManageCustomerController {
@@ -37,7 +37,7 @@ class ManageCustomerController {
         }
 
         private fun createView(customerId: Int = UNSUPPORTED_CUSTOMER_ID): Pane {
-            val loader = FXMLLoader(ManageCustomerController::class.java.classLoader.getResource("asset/customer/stock-manage-customer.fxml"))
+            val loader = ResourceLoader.loader(ManageCustomerController::class.java, "asset/customer/stock-manage-customer.fxml")
             val view = loader.load<Pane>()
             val controller = loader.getController<ManageCustomerController>()
             controller.initialize(customerId)

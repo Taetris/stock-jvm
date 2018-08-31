@@ -1,10 +1,10 @@
-package asset.item.manage
+package view.formatter
 
 import javafx.scene.control.TextFormatter
 import javafx.util.StringConverter
 import java.util.function.UnaryOperator
 
-class UnitTextFormatter : TextFormatter<String>(
+class DimensionTextFormatter : TextFormatter<String>(
         object : StringConverter<String>() {
             override fun toString(`object`: String?): String {
                 return `object`.toString()
@@ -26,6 +26,6 @@ class UnitTextFormatter : TextFormatter<String>(
 
     companion object {
 
-        private val DIMENSION_REGEX = Regex("([mM][2]?)?")
+        private val DIMENSION_REGEX = Regex("([0-9]*(\\.[0-9]*)?(\\*[0-9]*(\\.[0-9]*)?)?)?")
     }
 }

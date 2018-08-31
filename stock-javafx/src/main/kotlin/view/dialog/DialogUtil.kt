@@ -1,4 +1,4 @@
-package util
+package view.dialog
 
 import javafx.scene.control.Alert
 

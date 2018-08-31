@@ -21,7 +21,7 @@ import javafx.stage.Stage
 import kotlinx.coroutines.experimental.launch
 import org.slf4j.LoggerFactory
 import repository.item.Item
-import util.DialogUtil
+import view.dialog.DialogUtil
 import javax.inject.Inject
 
 class ItemOverviewController : ItemObserver {
