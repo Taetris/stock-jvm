@@ -34,6 +34,6 @@ data class Dimension(val width: Double, val height: Double, val unit: Unit) {
     }
 
     override fun toString(): String {
-        return "$width * $height"
+        return "$width*$height"
     }
 }

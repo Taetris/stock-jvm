@@ -4,19 +4,19 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<Tab text="Roba" xmlns:fx="http://javafx.com/fxml/1" fx:controller="asset.item.overview.ItemOverviewController">
+<Tab text="%items" xmlns:fx="http://javafx.com/fxml/1" fx:controller="asset.item.overview.ItemOverviewController">
     <VBox>
         <TableView fx:id="itemsTable" VBox.vgrow="ALWAYS">
             <columns>
-                <TableColumn fx:id="idColumn" text="ID"/>
-                <TableColumn fx:id="nameColumn" text="Naziv Robe"/>
-                <TableColumn fx:id="dimensionColumn" text="Dimenzija"/>
-                <TableColumn fx:id="descriptionColumn" text="Opis"/>
-                <TableColumn fx:id="amountColumn" text="Ukupno"/>
-                <TableColumn fx:id="unitColumn" text="JM"/>
-                <TableColumn fx:id="quantityColumn" text="Količina"/>
-                <TableColumn fx:id="pricePerUnitColumn" text="V.P.C"/>
-                <TableColumn fx:id="totalPriceWithoutTaxColumn" text="Iznos bez PDV-a (BAM)"/>
+                <TableColumn fx:id="idColumn" text="%itemId"/>
+                <TableColumn fx:id="nameColumn" text="%itemName"/>
+                <TableColumn fx:id="dimensionColumn" text="%itemDimension"/>
+                <TableColumn fx:id="descriptionColumn" text="%itemDescription"/>
+                <TableColumn fx:id="amountColumn" text="%itemAmount"/>
+                <TableColumn fx:id="unitColumn" text="%itemUnit"/>
+                <TableColumn fx:id="quantityColumn" text="%itemQuantity"/>
+                <TableColumn fx:id="pricePerUnitColumn" text="%itemPricePerUnit"/>
+                <TableColumn fx:id="totalPriceWithoutTaxColumn" text="%itemTotalPriceWithoutTax"/>
             </columns>
             <columnResizePolicy>
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
@@ -26,8 +26,8 @@
             <padding>
                 <Insets top="5" right="5" bottom="5" left="5"/>
             </padding>
-            <Button fx:id="removeItemButton" text="Izbriši"/>
-            <Button fx:id="manageItemButton" text="Ulaz"/>
+            <Button fx:id="removeItemButton" text="%remove"/>
+            <Button fx:id="manageItemButton" text="%add"/>
         </HBox>
     </VBox>
 </Tab>

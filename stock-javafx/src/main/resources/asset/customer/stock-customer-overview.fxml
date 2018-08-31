@@ -4,16 +4,16 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<Tab text="Kupci" xmlns:fx="http://javafx.com/fxml/1"
+<Tab text="%customers" xmlns:fx="http://javafx.com/fxml/1"
      fx:controller="asset.customer.overview.CustomerOverviewController">
     <VBox>
         <TableView fx:id="customersTable" VBox.vgrow="ALWAYS">
             <columns>
-                <TableColumn fx:id="idColumn" text="ID"/>
-                <TableColumn fx:id="nameColumn" text="Naziv Kupca"/>
-                <TableColumn fx:id="addressColumn" text="Adresa"/>
-                <TableColumn fx:id="idNumberColumn" text="ID Broj"/>
-                <TableColumn fx:id="pdvNumberColumn" text="PDV Broj"/>
+                <TableColumn fx:id="idColumn" text="%customerId"/>
+                <TableColumn fx:id="nameColumn" text="%customerName"/>
+                <TableColumn fx:id="addressColumn" text="%customerAddress"/>
+                <TableColumn fx:id="idNumberColumn" text="%customerIdNumber"/>
+                <TableColumn fx:id="pdvNumberColumn" text="%customerPdvNumber"/>
             </columns>
             <columnResizePolicy>
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
@@ -23,9 +23,9 @@
             <padding>
                 <Insets top="5" right="5" bottom="5" left="5"/>
             </padding>
-            <Button fx:id="removeCustomerButton" text="Izbriši"/>
-            <Button fx:id="editCustomerButton" text="Izmijeni"/>
-            <Button fx:id="addCustomerButton" text="Unesi"/>
+            <Button fx:id="removeCustomerButton" text="%remove"/>
+            <Button fx:id="editCustomerButton" text="%edit"/>
+            <Button fx:id="addCustomerButton" text="%add"/>
         </HBox>
     </VBox>
 </Tab>

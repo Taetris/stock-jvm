@@ -1,5 +1,6 @@
 package asset.item.manage
 
+import application.ResourceLoader
 import application.StockApplication
 import application.executor.UI
 import application.usecase.UseCaseException
@@ -7,7 +8,6 @@ import asset.item.usecase.AddItemUseCase
 import asset.item.usecase.GetItemUseCase
 import asset.item.usecase.UpdateItemUseCase
 import javafx.fxml.FXML
-import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
 import javafx.scene.control.Button
 import javafx.scene.control.Label
@@ -18,9 +18,11 @@ import javafx.stage.Stage
 import kotlinx.coroutines.experimental.launch
 import org.slf4j.LoggerFactory
 import repository.item.Item
-import util.DialogUtil
-import util.TextToDoubleFormatter
-import util.TextToIntFormatter
+import view.dialog.DialogUtil
+import view.formatter.DimensionTextFormatter
+import view.formatter.TextToDoubleFormatter
+import view.formatter.TextToIntFormatter
+import view.formatter.UnitTextFormatter
 import javax.inject.Inject
 
 class ManageItemController {
@@ -28,7 +30,7 @@ class ManageItemController {
     companion object {
 
         fun create(itemId: Int): Scene {
-            val loader = FXMLLoader(ManageItemController::class.java.classLoader.getResource("asset/item/stock-manage-item.fxml"))
+            val loader = ResourceLoader.loader(ManageItemController::class.java, "asset/item/stock-manage-item.fxml")
             val view = loader.load<Pane>()
             val controller = loader.getController<ManageItemController>()
             controller.initialize(itemId)
@@ -115,15 +117,15 @@ class ManageItemController {
 
     private fun initializeForUpdate(item: Item) {
         idTextField.isDisable = true
+        nameLabel.isDisable = true
+        nameTextField.isDisable = true
+        dimensionLabel.isDisable = true
+        dimensionTextField.isDisable = true
+        descriptionLabel.isDisable = true
+        descriptionTextField.isDisable = true
+        unitLabel.isDisable = true
+        unitTextField.isDisable = true
 
-        parentBox.children.remove(nameLabel)
-        parentBox.children.remove(nameTextField)
-        parentBox.children.remove(dimensionLabel)
-        parentBox.children.remove(dimensionTextField)
-        parentBox.children.remove(descriptionLabel)
-        parentBox.children.remove(descriptionTextField)
-        parentBox.children.remove(unitLabel)
-        parentBox.children.remove(unitTextField)
         parentBox.prefHeight = saveButton.layoutY
         parentBox.maxHeight = saveButton.layoutY
 
@@ -133,7 +135,11 @@ class ManageItemController {
     }
 
     private fun fillInFields(item: Item) {
+        nameTextField.text = item.name
+        dimensionTextField.text = item.dimension.toString()
+        descriptionTextField.text = item.description
         amountTextField.text = item.amount.toString()
+        unitTextField.text = item.dimension.unit.toString()
         pricePerUnitTextField.text = item.pricePerUnit.toString()
     }
 

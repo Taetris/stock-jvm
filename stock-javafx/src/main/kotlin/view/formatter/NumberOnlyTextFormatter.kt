@@ -1,4 +1,4 @@
-package util
+package view.formatter
 
 import javafx.scene.control.TextFormatter
 import javafx.util.StringConverter
