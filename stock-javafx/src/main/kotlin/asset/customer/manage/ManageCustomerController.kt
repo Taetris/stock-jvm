@@ -24,7 +24,7 @@ class ManageCustomerController {
 
     companion object {
 
-        private const val UNSUPPORTED_CUSTOMER_ID = -1
+        private const val NO_CUSTOMER_ID = -1
 
         fun createForUpdate(customerId: Int): Scene {
             val view = createView(customerId)
@@ -36,7 +36,7 @@ class ManageCustomerController {
             return Scene(view)
         }
 
-        private fun createView(customerId: Int = UNSUPPORTED_CUSTOMER_ID): Pane {
+        private fun createView(customerId: Int = NO_CUSTOMER_ID): Pane {
             val loader = ResourceLoader.loader(ManageCustomerController::class.java, "asset/customer/stock-manage-customer.fxml")
             val view = loader.load<Pane>()
             val controller = loader.getController<ManageCustomerController>()
@@ -78,7 +78,7 @@ class ManageCustomerController {
 
         initializeCommon()
 
-        if (customerId == UNSUPPORTED_CUSTOMER_ID) {
+        if (customerId == NO_CUSTOMER_ID) {
             initializeForAdd()
         } else {
             initializeForUpdate(customerId)
@@ -93,26 +93,49 @@ class ManageCustomerController {
     }
 
     private fun initializeForAdd() {
-        saveButton.setOnAction {
-            launch(UI) {
-                try {
-                    addCustomerUseCase.addNewCustomer(
-                            id = idTextField.text.toInt(),
-                            name = nameTextField.text,
-                            idNumber = idNumberTextField.text,
-                            pdvNumber = pdvNumberTextField.text,
-                            address = addressTextField.text)
-                    close()
-                } catch (e: UseCaseException) {
-                    DialogUtil.showErrorDialog(header = "Failed to insert customer", content = e.message)
-                }
-            }
-        }
+        saveButton.setOnAction { addCustomer() }
     }
 
     private fun initializeForUpdate(id: Int) {
         idTextField.isEditable = false
 
+        fetchCustomerAndFillInFields(id)
+        saveButton.setOnAction { updateCustomer() }
+    }
+
+    private fun addCustomer() {
+        launch(UI) {
+            try {
+                addCustomerUseCase.addNewCustomer(
+                        id = idTextField.text.toInt(),
+                        name = nameTextField.text,
+                        idNumber = idNumberTextField.text,
+                        pdvNumber = pdvNumberTextField.text,
+                        address = addressTextField.text)
+                close()
+            } catch (e: UseCaseException) {
+                DialogUtil.showErrorDialog(header = "Failed to insert customer", content = e.message)
+            }
+        }
+    }
+
+    private fun updateCustomer() {
+        launch(UI) {
+            try {
+                updateCustomerUseCase.updateCustomer(
+                        id = idTextField.text.toInt(),
+                        name = nameTextField.text,
+                        idNumber = idNumberTextField.text,
+                        pdvNumber = pdvNumberTextField.text,
+                        address = addressTextField.text)
+                close()
+            } catch (e: UseCaseException) {
+                DialogUtil.showErrorDialog(header = "Failed to insert customer", content = e.message)
+            }
+        }
+    }
+
+    private fun fetchCustomerAndFillInFields(id: Int) {
         launch(UI) {
             try {
                 val customer = getCustomerUseCase.getCustomer(id)
@@ -124,22 +147,6 @@ class ManageCustomerController {
                         address = customer.address)
             } catch (e: UseCaseException) {
                 DialogUtil.showErrorDialog(header = "Failed to get customer", content = e.message)
-            }
-        }
-
-        saveButton.setOnAction {
-            launch(UI) {
-                try {
-                    updateCustomerUseCase.updateCustomer(
-                            id = idTextField.text.toInt(),
-                            name = nameTextField.text,
-                            idNumber = idNumberTextField.text,
-                            pdvNumber = pdvNumberTextField.text,
-                            address = addressTextField.text)
-                    close()
-                } catch (e: UseCaseException) {
-                    DialogUtil.showErrorDialog(header = "Failed to insert customer", content = e.message)
-                }
             }
         }
     }
