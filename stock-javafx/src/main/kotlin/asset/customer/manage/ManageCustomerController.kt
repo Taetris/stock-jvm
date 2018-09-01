@@ -4,6 +4,7 @@ import application.ResourceLoader
 import application.StockApplication
 import application.executor.UI
 import application.usecase.UseCaseException
+import asset.customer.error.CustomerErrorCodeMapper
 import asset.customer.usecase.AddCustomerUseCase
 import asset.customer.usecase.GetCustomerUseCase
 import asset.customer.usecase.UpdateCustomerUseCase
@@ -89,18 +90,24 @@ class ManageCustomerController {
         idTextField.textFormatter = TextToIntFormatter()
         idNumberTextField.textFormatter = NumberOnlyTextFormatter()
         pdvNumberTextField.textFormatter = NumberOnlyTextFormatter()
-        cancelButton.setOnAction { (cancelButton.scene.window as Stage).close() }
+        cancelButton.setOnAction { close() }
     }
 
     private fun initializeForAdd() {
-        saveButton.setOnAction { addCustomer() }
+        saveButton.setOnAction {
+            addCustomer()
+            close()
+        }
     }
 
-    private fun initializeForUpdate(id: Int) {
+    private fun initializeForUpdate(customerId: Int) {
         idTextField.isEditable = false
 
-        fetchCustomerAndFillInFields(id)
-        saveButton.setOnAction { updateCustomer() }
+        fetchCustomerAndFillInFields(customerId)
+        saveButton.setOnAction {
+            updateCustomer()
+            close()
+        }
     }
 
     private fun addCustomer() {
@@ -112,9 +119,8 @@ class ManageCustomerController {
                         idNumber = idNumberTextField.text,
                         pdvNumber = pdvNumberTextField.text,
                         address = addressTextField.text)
-                close()
             } catch (e: UseCaseException) {
-                DialogUtil.showErrorDialog(header = "Failed to insert customer", content = e.message)
+                DialogUtil.showErrorDialog(CustomerErrorCodeMapper.mapErrorCodeToMessage(e.errorCode))
             }
         }
     }
@@ -128,9 +134,8 @@ class ManageCustomerController {
                         idNumber = idNumberTextField.text,
                         pdvNumber = pdvNumberTextField.text,
                         address = addressTextField.text)
-                close()
             } catch (e: UseCaseException) {
-                DialogUtil.showErrorDialog(header = "Failed to insert customer", content = e.message)
+                DialogUtil.showErrorDialog(CustomerErrorCodeMapper.mapErrorCodeToMessage(e.errorCode))
             }
         }
     }
@@ -146,7 +151,7 @@ class ManageCustomerController {
                         pdvNumber = customer.pdvNumber,
                         address = customer.address)
             } catch (e: UseCaseException) {
-                DialogUtil.showErrorDialog(header = "Failed to get customer", content = e.message)
+                DialogUtil.showErrorDialog(CustomerErrorCodeMapper.mapErrorCodeToMessage(e.errorCode))
             }
         }
     }

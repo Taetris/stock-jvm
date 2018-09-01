@@ -4,6 +4,7 @@ import application.ResourceLoader
 import application.StockApplication
 import application.executor.UI
 import application.usecase.UseCaseException
+import asset.item.error.ItemErrorCodeMapper
 import asset.item.usecase.AddItemUseCase
 import asset.item.usecase.GetItemUseCase
 import asset.item.usecase.UpdateItemUseCase
@@ -112,7 +113,10 @@ class ManageItemController {
     }
 
     private fun initializeForAdd() {
-        saveButton.setOnAction { addItem() }
+        saveButton.setOnAction {
+            addItem()
+            close()
+        }
     }
 
     private fun initializeForUpdate(item: Item) {
@@ -131,7 +135,10 @@ class ManageItemController {
 
         fillInFields(item)
 
-        saveButton.setOnAction { updateItem() }
+        saveButton.setOnAction {
+            updateItem()
+            close()
+        }
     }
 
     private fun fillInFields(item: Item) {
@@ -154,9 +161,8 @@ class ManageItemController {
                         amount = amountTextField.text.toInt(),
                         unit = unitTextField.text,
                         pricePerUnit = pricePerUnitTextField.text.toDouble())
-                close()
             } catch (e: UseCaseException) {
-                DialogUtil.showErrorDialog(header = "Failed to insert item", content = e.message)
+                DialogUtil.showErrorDialog(ItemErrorCodeMapper.mapErrorCodeToMessage(e.errorCode))
             }
         }
     }
@@ -169,7 +175,7 @@ class ManageItemController {
                         amount = amountTextField.text.toInt(),
                         pricePerUnit = pricePerUnitTextField.text.toDouble())
             } catch (e: UseCaseException) {
-                DialogUtil.showErrorDialog(header = "Failed to update the item", content = e.message)
+                DialogUtil.showErrorDialog(ItemErrorCodeMapper.mapErrorCodeToMessage(e.errorCode))
             }
         }
     }

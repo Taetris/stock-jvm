@@ -3,6 +3,7 @@ package asset.customer.overview
 import application.StockApplication
 import application.executor.UI
 import application.usecase.UseCaseException
+import asset.customer.error.CustomerErrorCodeMapper
 import asset.customer.manage.ManageCustomerController
 import asset.customer.subject.CustomerObserver
 import asset.customer.subject.CustomerSubject
@@ -94,7 +95,7 @@ class CustomerOverviewController : CustomerObserver {
             try {
                 removeCustomerUseCase.removeCustomer(selectedCustomer)
             } catch (e: UseCaseException) {
-                DialogUtil.showErrorDialog(header = "Failed to remove customer", content = e.message)
+                DialogUtil.showErrorDialog(CustomerErrorCodeMapper.mapErrorCodeToMessage(e.errorCode))
             }
         }
     }
@@ -113,7 +114,7 @@ class CustomerOverviewController : CustomerObserver {
                 val customers = getAllCustomersUseCase.getAllCustomers()
                 customersTable.items = FXCollections.observableArrayList(customers)
             } catch (e: UseCaseException) {
-                customersTable.placeholder = Label("Failed to retrieve data. Error: ${e.message}.")
+                customersTable.placeholder = Label(CustomerErrorCodeMapper.mapErrorCodeToMessage(e.errorCode))
             }
         }
     }

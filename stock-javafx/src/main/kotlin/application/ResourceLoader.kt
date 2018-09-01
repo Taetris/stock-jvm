@@ -6,13 +6,13 @@ import java.util.*
 
 object ResourceLoader {
 
+    val bundle = PropertyResourceBundle(ResourceLoader::class.java.classLoader.getResource("bundles/default.properties").openStream())
+
     fun <T> loader(clazz: Class<T>, resource: String): FXMLLoader {
-        val bundle = PropertyResourceBundle(clazz.classLoader.getResource("bundles/default.properties").openStream())
         return FXMLLoader(clazz.classLoader.getResource(resource), bundle)
     }
 
     fun <T> load(clazz: Class<T>, resource: String): Parent {
-        val bundle = PropertyResourceBundle(clazz.classLoader.getResource("bundles/default.properties").openStream())
         return FXMLLoader.load<Parent>(clazz.classLoader.getResource(resource), bundle)
     }
 }
