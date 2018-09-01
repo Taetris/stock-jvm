@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<MenuBar xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<MenuBar xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="menu.MenuController">
     <Menu mnemonicParsing="false" text="File">
-        <MenuItem fx:id="exportToPdfMenuItem" mnemonicParsing="false" text="Export to PDF "/>
+        <MenuItem fx:id="createInvoiceMenuItem" text="%createInvoiceMenuItem"/>
         <SeparatorMenuItem mnemonicParsing="false"/>
-        <MenuItem fx:id="saveAndCloseMenuItem" mnemonicParsing="false" text="Save &amp; Close"/>
-    </Menu>
-    <Menu mnemonicParsing="false" text="Help">
-        <MenuItem fx:id="aboutMenuItem" mnemonicParsing="false" text="About"/>
+        <MenuItem fx:id="exitMenuItem" text="%exitMenuItem"/>
     </Menu>
 </MenuBar>
