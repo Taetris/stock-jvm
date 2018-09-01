@@ -1,19 +1,18 @@
 package asset.item.manage
 
+import application.ResourceLoader
 import javafx.scene.Scene
 import javafx.scene.control.TextInputDialog
 import view.formatter.TextToIntFormatter
-import java.util.*
 
 class ManageItem {
 
     companion object {
 
         fun createView(): Scene? {
-            val bundle = PropertyResourceBundle(ManageItem::class.java.classLoader.getResource("bundles/default.properties").openStream())
             val dialog = TextInputDialog()
-            dialog.headerText = bundle.getString("manageItemDialogHeader")
-            dialog.contentText = bundle.getString("manageItemDialogContent")
+            dialog.headerText = ResourceLoader.bundle.getString("manageItemDialogHeader")
+            dialog.contentText = ResourceLoader.bundle.getString("manageItemDialogContent")
             dialog.editor.textFormatter = TextToIntFormatter()
 
             val result = dialog.showAndWait()

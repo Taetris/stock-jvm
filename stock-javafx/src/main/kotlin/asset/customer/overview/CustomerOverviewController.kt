@@ -3,6 +3,7 @@ package asset.customer.overview
 import application.StockApplication
 import application.executor.UI
 import application.usecase.UseCaseException
+import asset.customer.error.CustomerErrorCodeMapper
 import asset.customer.manage.ManageCustomerController
 import asset.customer.subject.CustomerObserver
 import asset.customer.subject.CustomerSubject
@@ -72,26 +73,50 @@ class CustomerOverviewController : CustomerObserver {
     }
 
     private fun initializeListeners() {
-        addCustomerButton.setOnAction {
-            val stage = Stage()
-            stage.scene = ManageCustomerController.createForAdd()
-            stage.show()
-        }
-
-        removeCustomerButton.setOnAction {
-            val selectedItem = customersTable.selectionModel.selectedItem
-            removeCustomer(selectedItem)
-        }
-
-        editCustomerButton.setOnAction {
-            val stage = Stage()
-            stage.scene = ManageCustomerController.createForUpdate(customersTable.selectionModel.selectedItem.id)
-            stage.show()
-        }
+        addCustomerButton.setOnAction { addCustomer() }
+        removeCustomerButton.setOnAction { removeCustomer() }
+        editCustomerButton.setOnAction { editCustomer() }
 
         setButtonVisibility()
 
         subject.register(this)
+    }
+
+    private fun addCustomer() {
+        val stage = Stage()
+        stage.scene = ManageCustomerController.createForAdd()
+        stage.show()
+    }
+
+    private fun removeCustomer() {
+        launch(UI) {
+            val selectedCustomer = customersTable.selectionModel.selectedItem
+
+            try {
+                removeCustomerUseCase.removeCustomer(selectedCustomer)
+            } catch (e: UseCaseException) {
+                DialogUtil.showErrorDialog(CustomerErrorCodeMapper.mapErrorCodeToMessage(e.errorCode))
+            }
+        }
+    }
+
+    private fun editCustomer() {
+        val stage = Stage()
+        stage.scene = ManageCustomerController.createForUpdate(customersTable.selectionModel.selectedItem.id)
+        stage.show()
+    }
+
+    private fun fetchCustomers() {
+        customersTable.items.clear()
+
+        launch(UI) {
+            try {
+                val customers = getAllCustomersUseCase.getAllCustomers()
+                customersTable.items = FXCollections.observableArrayList(customers)
+            } catch (e: UseCaseException) {
+                customersTable.placeholder = Label(CustomerErrorCodeMapper.mapErrorCodeToMessage(e.errorCode))
+            }
+        }
     }
 
     private fun initializeTable() {
@@ -114,29 +139,6 @@ class CustomerOverviewController : CustomerObserver {
             } ?: run {
                 removeCustomerButton.isVisible = false
                 editCustomerButton.isVisible = false
-            }
-        }
-    }
-
-    private fun fetchCustomers() {
-        customersTable.items.clear()
-
-        launch(UI) {
-            try {
-                val customers = getAllCustomersUseCase.getAllCustomers()
-                customersTable.items = FXCollections.observableArrayList(customers)
-            } catch (e: UseCaseException) {
-                customersTable.placeholder = Label("Failed to retrieve data. Error: ${e.message}.")
-            }
-        }
-    }
-
-    private fun removeCustomer(selectedCustomer: Customer) {
-        launch(UI) {
-            try {
-                removeCustomerUseCase.removeCustomer(selectedCustomer)
-            } catch (e: UseCaseException) {
-                DialogUtil.showErrorDialog(header = "Failed to remove customer", content = e.message)
             }
         }
     }

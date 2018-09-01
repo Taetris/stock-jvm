@@ -3,6 +3,7 @@ package asset.item.overview
 import application.StockApplication
 import application.executor.UI
 import application.usecase.UseCaseException
+import asset.item.error.ItemErrorCodeMapper
 import asset.item.manage.ManageItem
 import asset.item.subject.ItemObserver
 import asset.item.subject.ItemSubject
@@ -130,7 +131,7 @@ class ItemOverviewController : ItemObserver {
                 val items = getAllItemsUseCase.getAllItems()
                 itemsTable.items = FXCollections.observableArrayList(items)
             } catch (e: UseCaseException) {
-                itemsTable.placeholder = Label("Failed to retrieve data. Error: ${e.message}.")
+                itemsTable.placeholder = Label(ItemErrorCodeMapper.mapErrorCodeToMessage(e.errorCode))
             }
         }
     }
@@ -140,7 +141,7 @@ class ItemOverviewController : ItemObserver {
             try {
                 removeItemUseCase.removeItem(item)
             } catch (e: UseCaseException) {
-                DialogUtil.showErrorDialog(header = "Failed to remove item", content = e.message)
+                DialogUtil.showErrorDialog(ItemErrorCodeMapper.mapErrorCodeToMessage(e.errorCode))
             }
         }
     }
