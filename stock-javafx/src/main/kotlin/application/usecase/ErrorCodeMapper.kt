@@ -4,9 +4,9 @@ import application.ResourceLoader
 
 open class ErrorCodeMapper {
 
-    open fun mapErrorCodeToMessage(errorCode: ErrorCode): String {
-        val bundle = ResourceLoader.bundle
+    protected val bundle = ResourceLoader.bundle
 
+    open fun mapErrorCodeToMessage(errorCode: ErrorCode): String {
         val message = when (errorCode) {
             ErrorCode.ALREADY_EXISTS -> bundle.getString("defaultError")
             ErrorCode.NOT_EXIST -> bundle.getString("defaultError")
