@@ -5,6 +5,7 @@ import asset.customer.overview.CustomerOverviewController
 import asset.item.manage.ManageItemController
 import asset.item.overview.ItemOverviewController
 import dagger.Component
+import invoice.metadata.InvoiceMetadataController
 import javax.inject.Singleton
 
 @Singleton
@@ -18,4 +19,6 @@ interface StockComponent {
     fun inject(itemOverviewController: ItemOverviewController)
 
     fun inject(manageItemController: ManageItemController)
+
+    fun inject(invoiceMetadataController: InvoiceMetadataController)
 }
