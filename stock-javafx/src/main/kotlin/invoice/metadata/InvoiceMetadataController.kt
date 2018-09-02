@@ -5,6 +5,10 @@ import application.StockApplication
 import application.executor.UI
 import application.usecase.ErrorCodeMapper
 import application.usecase.UseCaseException
+import asset.customer.error.CustomerErrorCodeMapper
+import asset.customer.usecase.GetCustomerUseCase
+import invoice.items.overview.SelectedItemsOverviewController
+import invoice.model.Invoice
 import invoice.model.InvoiceGroup
 import invoice.usecase.GetNextInvoiceIdUseCase
 import javafx.fxml.FXML
@@ -16,6 +20,7 @@ import javafx.stage.Stage
 import kotlinx.coroutines.experimental.launch
 import org.slf4j.LoggerFactory
 import view.dialog.DialogUtil
+import view.formatter.TextToIntFormatter
 import javax.inject.Inject
 
 class InvoiceMetadataController {
@@ -36,6 +41,8 @@ class InvoiceMetadataController {
 
     @Inject
     internal lateinit var getNextInvoiceIdUseCase: GetNextInvoiceIdUseCase
+    @Inject
+    internal lateinit var getCustomerUseCase: GetCustomerUseCase
 
     @FXML
     private lateinit var invoiceIdTextField: TextField
@@ -54,12 +61,41 @@ class InvoiceMetadataController {
     fun initialize() {
         logger.info("Initialize")
 
-        invoiceIdTextField.isDisable = true
+        initializeProperties()
+    }
 
-        invoiceRetailRadioButton.setOnAction { updateIdForGroup(InvoiceGroup.RETAIL) }
-        invoiceWholesaleRadioButton.setOnAction { updateIdForGroup(InvoiceGroup.WHOLESALE) }
+    private fun initializeProperties() {
+        invoiceIdTextField.isDisable = true
+        invoiceCustomerTextField.textFormatter = TextToIntFormatter()
+        invoiceIdTextField.textFormatter = TextToIntFormatter()
+
+        invoiceRetailRadioButton.selectedProperty().addListener { _, _, _ -> updateIdForGroup(InvoiceGroup.RETAIL) }
+        invoiceWholesaleRadioButton.selectedProperty().addListener { _, _, _ -> updateIdForGroup(InvoiceGroup.WHOLESALE) }
+
         invoiceCancelButton.setOnAction { close() }
-        invoiceContinueButton.setOnAction { close() }
+        invoiceContinueButton.setOnAction { createMetadataAndNavigateToItemSelection() }
+
+        invoiceRetailRadioButton.isSelected = true
+    }
+
+    private fun createMetadataAndNavigateToItemSelection() {
+        launch(UI) {
+            val customerId = invoiceCustomerTextField.text.toInt()
+            val invoiceId = invoiceIdTextField.text.toInt()
+
+            try {
+                val customer = getCustomerUseCase.getCustomer(customerId)
+                val invoice = Invoice(invoiceId, customer)
+                navigateToItemSelection(invoice)
+            } catch (e: UseCaseException) {
+                DialogUtil.showErrorDialog(CustomerErrorCodeMapper.mapErrorCodeToMessage(e.errorCode))
+            }
+        }
+    }
+
+    private fun navigateToItemSelection(invoice: Invoice) {
+        val scene = SelectedItemsOverviewController.create(invoice)
+        getStage().scene = scene
     }
 
     private fun updateIdForGroup(invoiceGroup: InvoiceGroup) {
@@ -75,6 +111,8 @@ class InvoiceMetadataController {
     }
 
     private fun close() {
-        (invoiceCancelButton.scene.window as Stage).close()
+        getStage().close()
     }
+
+    private fun getStage(): Stage = invoiceCancelButton.scene.window as Stage
 }

@@ -21,6 +21,6 @@ class TextToIntFormatter : TextFormatter<Int>(
 
     companion object {
 
-        private val NUMBER_ONLY_REGEX = Regex("-?([1-9][0-9]*)?")
+        private val NUMBER_ONLY_REGEX = Regex("([1-9][0-9]*)?")
     }
 }

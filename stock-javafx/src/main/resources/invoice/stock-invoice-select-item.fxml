@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox spacing="5.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/10.0.1"
+      fx:controller="invoice.items.select.SelectItemController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+    <Label text="%itemId"/>
+    <TextField fx:id="idTextField" disable="true"/>
+    <Label text="%itemAmount"/>
+    <Spinner fx:id="amountSpinner"/>
+    <Label text="%itemPricePerUnit"/>
+    <TextField fx:id="pricePerUnitTextField"/>
+    <HBox fillHeight="false" spacing="10.0">
+        <VBox.margin>
+            <Insets top="20.0"/>
+        </VBox.margin>
+        <Button fx:id="cancelButton" maxWidth="1.7976931348623157E308" text="%cancel" HBox.hgrow="ALWAYS"/>
+        <Button fx:id="saveButton" maxWidth="1.7976931348623157E308" text="%save" HBox.hgrow="ALWAYS"/>
+    </HBox>
+</VBox>

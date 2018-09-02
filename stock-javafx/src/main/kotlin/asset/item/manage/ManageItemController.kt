@@ -113,10 +113,7 @@ class ManageItemController {
     }
 
     private fun initializeForAdd() {
-        saveButton.setOnAction {
-            addItem()
-            close()
-        }
+        saveButton.setOnAction { addItem() }
     }
 
     private fun initializeForUpdate(item: Item) {
@@ -135,10 +132,7 @@ class ManageItemController {
 
         fillInFields(item)
 
-        saveButton.setOnAction {
-            updateItem()
-            close()
-        }
+        saveButton.setOnAction { updateItem() }
     }
 
     private fun fillInFields(item: Item) {
@@ -161,6 +155,7 @@ class ManageItemController {
                         amount = amountTextField.text.toInt(),
                         unit = unitTextField.text,
                         pricePerUnit = pricePerUnitTextField.text.toDouble())
+                close()
             } catch (e: UseCaseException) {
                 DialogUtil.showErrorDialog(ItemErrorCodeMapper.mapErrorCodeToMessage(e.errorCode))
             }
@@ -174,6 +169,7 @@ class ManageItemController {
                         id = idTextField.text.toInt(),
                         amount = amountTextField.text.toInt(),
                         pricePerUnit = pricePerUnitTextField.text.toDouble())
+                close()
             } catch (e: UseCaseException) {
                 DialogUtil.showErrorDialog(ItemErrorCodeMapper.mapErrorCodeToMessage(e.errorCode))
             }
