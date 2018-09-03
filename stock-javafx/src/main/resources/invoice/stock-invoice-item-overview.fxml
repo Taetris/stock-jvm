@@ -30,8 +30,8 @@
                 <Insets top="5" right="5" bottom="5" left="5"/>
             </padding>
             <Button fx:id="removeItemButton" text="%remove"/>
-            <Button fx:id="finishButton" text="%finish"/>
             <Button fx:id="selectItemButton" text="%select"/>
+            <Button fx:id="finishButton" text="%finish"/>
         </HBox>
     </VBox>
 </AnchorPane>
