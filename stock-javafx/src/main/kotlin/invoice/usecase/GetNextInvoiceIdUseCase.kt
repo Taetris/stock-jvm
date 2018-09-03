@@ -28,16 +28,16 @@ class GetNextInvoiceIdUseCase @Inject constructor() {
         return withContext(CommonPool) {
             logger.info("Getting invoice id for group '$invoiceGroup'")
 
-        try {
-            return@withContext when (invoiceGroup) {
-                InvoiceGroup.RETAIL -> invoiceRepository.getNextInvoiceIdForRetail()
-                InvoiceGroup.WHOLESALE -> invoiceRepository.getNextInvoiceIdForWholesale()
+            try {
+                return@withContext when (invoiceGroup) {
+                    InvoiceGroup.RETAIL -> invoiceRepository.getNextInvoiceIdForRetail()
+                    InvoiceGroup.WHOLESALE -> invoiceRepository.getNextInvoiceIdForWholesale()
+                }
+            } catch (e: RepositoryException) {
+                val message = "Failed to retrieve id for group '$invoiceGroup'. Error: ${e.message}"
+                logger.error(message, e)
+                throw UseCaseException(message, ErrorCode.OPERATION_FAILED)
             }
-        } catch (e: RepositoryException) {
-            val message = "Failed to retrieve id for group '$invoiceGroup'. Error: ${e.message}"
-            logger.error(message, e)
-            throw UseCaseException(message, ErrorCode.OPERATION_FAILED)
         }
-    }
     }
 }

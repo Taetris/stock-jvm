@@ -6,7 +6,6 @@ import javafx.application.Application
 import javafx.application.Platform
 import javafx.scene.Scene
 import javafx.stage.Stage
-import java.util.*
 
 class StockApplication : Application() {
 
@@ -32,7 +31,6 @@ class StockApplication : Application() {
 
         @JvmStatic
         fun main(args: Array<String>) {
-            Locale.setDefault(Locale("bs"))
             launch(StockApplication::class.java)
         }
     }

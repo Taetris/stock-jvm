@@ -44,7 +44,6 @@ class SelectItemController {
     private lateinit var amountSpinner: Spinner<Int>
     @FXML
     private lateinit var pricePerUnitTextField: TextField
-
     @FXML
     private lateinit var cancelButton: Button
     @FXML

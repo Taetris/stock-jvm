@@ -110,9 +110,7 @@ class InvoiceMetadataController {
         }
     }
 
-    private fun close() {
-        getStage().close()
-    }
+    private fun close() = getStage().close()
 
     private fun getStage(): Stage = invoiceCancelButton.scene.window as Stage
 }

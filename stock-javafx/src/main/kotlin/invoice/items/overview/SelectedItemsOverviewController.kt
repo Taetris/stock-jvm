@@ -31,8 +31,6 @@ class SelectedItemsOverviewController {
 
     companion object {
 
-        const val UNKNOWN_ITEM_ID = -1
-
         fun create(invoice: Invoice): Scene {
             val loader = ResourceLoader.loader(SelectedItemsOverviewController::class.java, "invoice/stock-invoice-item-overview.fxml")
             val view = loader.load<Pane>()
@@ -84,19 +82,23 @@ class SelectedItemsOverviewController {
         logger.info("Initialize with invoice '$invoice'")
         this.invoice = invoice
 
-        initializeListeners()
+        initializeControls()
         initializeTable()
     }
 
-    private fun initializeListeners() {
-        removeItemButton.setOnAction { removeSelectedItem() }
+    private fun initializeControls() {
         finishButton.setOnAction { close() }
+        removeItemButton.setOnAction {
+            val selectedItem = selectedItemsTable.selectionModel.selectedItem
+            removeSelectedItem(selectedItem)
+        }
         selectItemButton.setOnAction {
             val itemId = inputItemId()
             fetchItemAndNavigateToSelect(itemId)
         }
 
-        setButtonVisibility()
+        removeItemButton.isVisible = false
+        removeItemButton.visibleProperty().bind(selectedItemsTable.selectionModel.selectedItemProperty().isNotNull)
     }
 
     private fun initializeTable() {
@@ -113,10 +115,7 @@ class SelectedItemsOverviewController {
         selectedItemsTable.items = invoice.selectedItems
     }
 
-    private fun removeSelectedItem() {
-        val selectedItem = selectedItemsTable.selectionModel.selectedItem
-        invoice.selectedItems.remove(selectedItem)
-    }
+    private fun removeSelectedItem(selectedItem: Item) = invoice.selectedItems.remove(selectedItem)
 
     private fun inputItemId(): Int {
         val dialog = TextInputDialog()
@@ -125,12 +124,7 @@ class SelectedItemsOverviewController {
         dialog.editor.textFormatter = TextToIntFormatter()
 
         val result = dialog.showAndWait()
-        return if (result.isPresent) {
-            result.get().toInt()
-        } else {
-            dialog.close()
-            return UNKNOWN_ITEM_ID
-        }
+        return result.get().toInt()
     }
 
     private fun fetchItemAndNavigateToSelect(id: Int) {
@@ -149,18 +143,6 @@ class SelectedItemsOverviewController {
         val stage = Stage()
         stage.scene = scene
         stage.show()
-    }
-
-    private fun setButtonVisibility() {
-        removeItemButton.isVisible = false
-
-        selectedItemsTable.selectionModel.selectedItemProperty().addListener { _, _, newValue ->
-            newValue?.let {
-                removeItemButton.isVisible = true
-            } ?: run {
-                removeItemButton.isVisible = false
-            }
-        }
     }
 
     private fun close() = (finishButton.scene.window as Stage).close()

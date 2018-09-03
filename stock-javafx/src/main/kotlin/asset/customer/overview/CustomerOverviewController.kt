@@ -1,5 +1,6 @@
 package asset.customer.overview
 
+import application.ResourceLoader
 import application.StockApplication
 import application.executor.UI
 import application.usecase.UseCaseException
@@ -13,15 +14,13 @@ import javafx.beans.property.SimpleIntegerProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections
 import javafx.fxml.FXML
-import javafx.scene.control.Button
-import javafx.scene.control.Label
-import javafx.scene.control.TableColumn
-import javafx.scene.control.TableView
+import javafx.scene.control.*
 import javafx.stage.Stage
 import kotlinx.coroutines.experimental.launch
 import org.slf4j.LoggerFactory
 import repository.customer.Customer
 import view.dialog.DialogUtil
+import view.formatter.TextToIntFormatter
 import javax.inject.Inject
 
 class CustomerOverviewController : CustomerObserver {
@@ -31,6 +30,13 @@ class CustomerOverviewController : CustomerObserver {
     }
 
     private val logger = LoggerFactory.getLogger(CustomerOverviewController::class.java)
+
+    @Inject
+    internal lateinit var getAllCustomersUseCase: GetAllCustomersUseCase
+    @Inject
+    internal lateinit var removeCustomerUseCase: RemoveCustomerUseCase
+    @Inject
+    internal lateinit var subject: CustomerSubject
 
     @FXML
     private lateinit var customersTable: TableView<Customer>
@@ -45,24 +51,15 @@ class CustomerOverviewController : CustomerObserver {
     @FXML
     private lateinit var pdvNumberColumn: TableColumn<Customer, String>
     @FXML
-    private lateinit var addCustomerButton: Button
+    private lateinit var manageCustomerButton: Button
     @FXML
     private lateinit var removeCustomerButton: Button
-    @FXML
-    private lateinit var editCustomerButton: Button
-
-    @Inject
-    lateinit var getAllCustomersUseCase: GetAllCustomersUseCase
-    @Inject
-    lateinit var removeCustomerUseCase: RemoveCustomerUseCase
-    @Inject
-    lateinit var subject: CustomerSubject
 
     @FXML
     fun initialize() {
         logger.info("Initialize")
 
-        initializeListeners()
+        initializeControls()
         initializeTable()
 
         fetchCustomers()
@@ -72,38 +69,28 @@ class CustomerOverviewController : CustomerObserver {
         fetchCustomers()
     }
 
-    private fun initializeListeners() {
-        addCustomerButton.setOnAction { addCustomer() }
-        removeCustomerButton.setOnAction { removeCustomer() }
-        editCustomerButton.setOnAction { editCustomer() }
+    private fun initializeControls() {
+        removeCustomerButton.setOnAction {
+            val selectedCustomer = customersTable.selectionModel.selectedItem
+            removeCustomer(selectedCustomer)
+        }
+        manageCustomerButton.setOnAction {
+            val customerId = inputCustomerId()
+            navigateToCustomerManagement(customerId)
+        }
 
-        setButtonVisibility()
+        removeCustomerButton.isVisible = false
+        removeCustomerButton.visibleProperty().bind(customersTable.selectionModel.selectedItemProperty().isNotNull)
 
         subject.register(this)
     }
 
-    private fun addCustomer() {
-        val stage = Stage()
-        stage.scene = ManageCustomerController.createForAdd()
-        stage.show()
-    }
-
-    private fun removeCustomer() {
-        launch(UI) {
-            val selectedCustomer = customersTable.selectionModel.selectedItem
-
-            try {
-                removeCustomerUseCase.removeCustomer(selectedCustomer)
-            } catch (e: UseCaseException) {
-                DialogUtil.showErrorDialog(CustomerErrorCodeMapper.mapErrorCodeToMessage(e.errorCode))
-            }
-        }
-    }
-
-    private fun editCustomer() {
-        val stage = Stage()
-        stage.scene = ManageCustomerController.createForUpdate(customersTable.selectionModel.selectedItem.id)
-        stage.show()
+    private fun initializeTable() {
+        idColumn.setCellValueFactory { param -> SimpleIntegerProperty(param.value.id) }
+        nameColumn.setCellValueFactory { param -> SimpleStringProperty(param.value.name) }
+        idNumberColumn.setCellValueFactory { param -> SimpleStringProperty(param.value.idNumber) }
+        pdvNumberColumn.setCellValueFactory { param -> SimpleStringProperty(param.value.pdvNumber) }
+        addressColumn.setCellValueFactory { param -> SimpleStringProperty(param.value.address) }
     }
 
     private fun fetchCustomers() {
@@ -119,27 +106,30 @@ class CustomerOverviewController : CustomerObserver {
         }
     }
 
-    private fun initializeTable() {
-        idColumn.setCellValueFactory { param -> SimpleIntegerProperty(param.value.id) }
-        nameColumn.setCellValueFactory { param -> SimpleStringProperty(param.value.name) }
-        idNumberColumn.setCellValueFactory { param -> SimpleStringProperty(param.value.idNumber) }
-        pdvNumberColumn.setCellValueFactory { param -> SimpleStringProperty(param.value.pdvNumber) }
-        addressColumn.setCellValueFactory { param -> SimpleStringProperty(param.value.address) }
-    }
-
-    private fun setButtonVisibility() {
-        removeCustomerButton.isVisible = false
-        editCustomerButton.isVisible = false
-
-        customersTable.selectionModel.selectedItemProperty().addListener { _, _, newValue ->
-            logger.info("Changed selection to $newValue")
-            newValue?.let {
-                removeCustomerButton.isVisible = true
-                editCustomerButton.isVisible = true
-            } ?: run {
-                removeCustomerButton.isVisible = false
-                editCustomerButton.isVisible = false
+    private fun removeCustomer(selectedCustomer: Customer) {
+        launch(UI) {
+            try {
+                removeCustomerUseCase.removeCustomer(selectedCustomer)
+            } catch (e: UseCaseException) {
+                DialogUtil.showErrorDialog(CustomerErrorCodeMapper.mapErrorCodeToMessage(e.errorCode))
             }
         }
+    }
+
+    private fun inputCustomerId(): Int? {
+        val dialog = TextInputDialog()
+        dialog.headerText = ResourceLoader.bundle.getString("manageCustomerDialogHeader")
+        dialog.contentText = ResourceLoader.bundle.getString("manageCustomerDialogContent")
+        dialog.editor.textFormatter = TextToIntFormatter()
+
+        val result = dialog.showAndWait()
+        return result.get().toInt()
+    }
+
+    private fun navigateToCustomerManagement(customerId: Int?) {
+        val stage = Stage()
+        val scene = if (customerId == null) ManageCustomerController.create() else ManageCustomerController.create(customerId)
+        stage.scene = scene
+        stage.show()
     }
 }

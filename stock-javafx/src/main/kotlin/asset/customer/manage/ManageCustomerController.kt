@@ -16,6 +16,7 @@ import javafx.scene.layout.Pane
 import javafx.stage.Stage
 import kotlinx.coroutines.experimental.launch
 import org.slf4j.LoggerFactory
+import repository.customer.Customer
 import view.dialog.DialogUtil
 import view.formatter.NumberOnlyTextFormatter
 import view.formatter.TextToIntFormatter
@@ -27,22 +28,12 @@ class ManageCustomerController {
 
         private const val NO_CUSTOMER_ID = -1
 
-        fun createForUpdate(customerId: Int): Scene {
-            val view = createView(customerId)
-            return Scene(view)
-        }
-
-        fun createForAdd(): Scene {
-            val view = createView()
-            return Scene(view)
-        }
-
-        private fun createView(customerId: Int = NO_CUSTOMER_ID): Pane {
+        fun create(customerId: Int = NO_CUSTOMER_ID): Scene {
             val loader = ResourceLoader.loader(ManageCustomerController::class.java, "asset/customer/stock-manage-customer.fxml")
             val view = loader.load<Pane>()
             val controller = loader.getController<ManageCustomerController>()
             controller.initialize(customerId)
-            return view
+            return Scene(view)
         }
     }
 
@@ -77,35 +68,43 @@ class ManageCustomerController {
     private fun initialize(customerId: Int) {
         logger.info("Initializing view for customer id '$customerId'")
 
-        initializeCommon()
-
-        if (customerId == NO_CUSTOMER_ID) {
-            initializeForAdd()
-        } else {
-            initializeForUpdate(customerId)
-        }
+        initializeControls(customerId)
+        initializeController(customerId)
     }
 
-    private fun initializeCommon() {
+    private fun initializeControls(customerId: Int) {
         idTextField.textFormatter = TextToIntFormatter()
         idNumberTextField.textFormatter = NumberOnlyTextFormatter()
         pdvNumberTextField.textFormatter = NumberOnlyTextFormatter()
         cancelButton.setOnAction { close() }
+
+        idTextField.text = customerId.toString()
+    }
+
+    private fun initializeController(id: Int) {
+        launch(UI) {
+            try {
+                val customer = getCustomerUseCase.getCustomer(id)
+                initializeForUpdate(customer)
+            } catch (e: UseCaseException) {
+                initializeForAdd()
+            }
+        }
+    }
+
+    private fun initializeForUpdate(customer: Customer) {
+        idTextField.isDisable = true
+
+        fillInMissingFields(customer)
+        saveButton.setOnAction {
+            updateCustomer()
+            close()
+        }
     }
 
     private fun initializeForAdd() {
         saveButton.setOnAction {
             addCustomer()
-            close()
-        }
-    }
-
-    private fun initializeForUpdate(customerId: Int) {
-        idTextField.isEditable = false
-
-        fetchCustomerAndFillInFields(customerId)
-        saveButton.setOnAction {
-            updateCustomer()
             close()
         }
     }
@@ -140,31 +139,12 @@ class ManageCustomerController {
         }
     }
 
-    private fun fetchCustomerAndFillInFields(id: Int) {
-        launch(UI) {
-            try {
-                val customer = getCustomerUseCase.getCustomer(id)
-                fillInFields(
-                        id = customer.id,
-                        name = customer.name,
-                        idNumber = customer.idNumber,
-                        pdvNumber = customer.pdvNumber,
-                        address = customer.address)
-            } catch (e: UseCaseException) {
-                DialogUtil.showErrorDialog(CustomerErrorCodeMapper.mapErrorCodeToMessage(e.errorCode))
-            }
-        }
+    private fun fillInMissingFields(customer: Customer) {
+        nameTextField.text = customer.name
+        idNumberTextField.text = customer.idNumber
+        pdvNumberTextField.text = customer.pdvNumber
+        addressTextField.text = customer.address
     }
 
-    private fun fillInFields(id: Int, name: String, idNumber: String, pdvNumber: String, address: String) {
-        idTextField.text = id.toString()
-        nameTextField.text = name
-        idNumberTextField.text = idNumber
-        pdvNumberTextField.text = pdvNumber
-        addressTextField.text = address
-    }
-
-    private fun close() {
-        (cancelButton.scene.window as Stage).close()
-    }
+    private fun close() = (cancelButton.scene.window as Stage).close()
 }

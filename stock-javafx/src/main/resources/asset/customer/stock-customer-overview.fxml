@@ -24,8 +24,7 @@
                 <Insets top="5" right="5" bottom="5" left="5"/>
             </padding>
             <Button fx:id="removeCustomerButton" text="%remove"/>
-            <Button fx:id="editCustomerButton" text="%edit"/>
-            <Button fx:id="addCustomerButton" text="%add"/>
+            <Button fx:id="manageCustomerButton" text="%add"/>
         </HBox>
     </VBox>
 </Tab>

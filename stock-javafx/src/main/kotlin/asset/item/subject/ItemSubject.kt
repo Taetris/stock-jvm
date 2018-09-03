@@ -8,12 +8,12 @@ import repository.item.ObservableItemRepository
 
 class ItemSubject(itemRepository: ObservableItemRepository) : RepositoryObserver {
 
-    private val logger = LoggerFactory.getLogger(ItemSubject::class.java)
-    private val observers = ArrayList<ItemObserver>()
-
     init {
         itemRepository.register(this)
     }
+
+    private val logger = LoggerFactory.getLogger(ItemSubject::class.java)
+    private val observers = ArrayList<ItemObserver>()
 
     fun register(observer: ItemObserver) {
         logger.info("Registering Observer '$observer")

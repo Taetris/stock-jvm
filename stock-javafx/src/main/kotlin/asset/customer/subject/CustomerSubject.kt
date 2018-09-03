@@ -8,12 +8,12 @@ import repository.customer.ObservableCustomerRepository
 
 class CustomerSubject(customerRepository: ObservableCustomerRepository) : RepositoryObserver {
 
-    private val logger = LoggerFactory.getLogger(CustomerSubject::class.java)
-    private val observers = ArrayList<CustomerObserver>()
-
     init {
         customerRepository.register(this)
     }
+
+    private val logger = LoggerFactory.getLogger(CustomerSubject::class.java)
+    private val observers = ArrayList<CustomerObserver>()
 
     fun register(observer: CustomerObserver) {
         logger.info("Registering Observer '$observer")

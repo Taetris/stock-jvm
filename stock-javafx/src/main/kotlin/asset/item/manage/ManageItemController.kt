@@ -11,10 +11,8 @@ import asset.item.usecase.UpdateItemUseCase
 import javafx.fxml.FXML
 import javafx.scene.Scene
 import javafx.scene.control.Button
-import javafx.scene.control.Label
 import javafx.scene.control.TextField
 import javafx.scene.layout.Pane
-import javafx.scene.layout.VBox
 import javafx.stage.Stage
 import kotlinx.coroutines.experimental.launch
 import org.slf4j.LoggerFactory
@@ -30,7 +28,9 @@ class ManageItemController {
 
     companion object {
 
-        fun create(itemId: Int): Scene {
+        private const val NO_ITEM_ID = -1
+
+        fun create(itemId: Int = NO_ITEM_ID): Scene {
             val loader = ResourceLoader.loader(ManageItemController::class.java, "asset/item/stock-manage-item.fxml")
             val view = loader.load<Pane>()
             val controller = loader.getController<ManageItemController>()
@@ -53,54 +53,32 @@ class ManageItemController {
     internal lateinit var updateItemUseCase: UpdateItemUseCase
 
     @FXML
-    private lateinit var parentBox: VBox
-    @FXML
     private lateinit var idTextField: TextField
-    @FXML
-    private lateinit var nameLabel: Label
     @FXML
     private lateinit var nameTextField: TextField
     @FXML
-    private lateinit var dimensionLabel: Label
-    @FXML
     private lateinit var dimensionTextField: TextField
-    @FXML
-    private lateinit var descriptionLabel: Label
     @FXML
     private lateinit var descriptionTextField: TextField
     @FXML
     private lateinit var amountTextField: TextField
     @FXML
-    private lateinit var unitLabel: Label
-    @FXML
     private lateinit var unitTextField: TextField
     @FXML
     private lateinit var pricePerUnitTextField: TextField
-
     @FXML
     private lateinit var cancelButton: Button
     @FXML
     private lateinit var saveButton: Button
 
-    private fun initialize(id: Int) {
-        logger.info("Initialize for id '$id'")
+    private fun initialize(itemId: Int) {
+        logger.info("Initialize for itemId '$itemId'")
 
-        initializeControls(id)
-        initializeController(id)
+        initializeControls(itemId)
+        initializeController(itemId)
     }
 
-    private fun initializeController(id: Int) {
-        launch(UI) {
-            try {
-                val item = getItemUseCase.getItem(id)
-                initializeForUpdate(item)
-            } catch (e: UseCaseException) {
-                initializeForAdd()
-            }
-        }
-    }
-
-    private fun initializeControls(id: Int) {
+    private fun initializeControls(itemId: Int) {
         cancelButton.setOnAction { close() }
 
         idTextField.textFormatter = TextToIntFormatter()
@@ -109,39 +87,40 @@ class ManageItemController {
         amountTextField.textFormatter = TextToIntFormatter()
         pricePerUnitTextField.textFormatter = TextToDoubleFormatter()
 
-        idTextField.text = id.toString()
+        idTextField.text = itemId.toString()
+    }
+
+    private fun initializeController(itemId: Int) {
+        launch(UI) {
+            try {
+                val item = getItemUseCase.getItem(itemId)
+                initializeForUpdate(item)
+            } catch (e: UseCaseException) {
+                initializeForAdd()
+            }
+        }
     }
 
     private fun initializeForAdd() {
-        saveButton.setOnAction { addItem() }
+        saveButton.setOnAction {
+            addItem()
+            close()
+        }
     }
 
     private fun initializeForUpdate(item: Item) {
         idTextField.isDisable = true
-        nameLabel.isDisable = true
         nameTextField.isDisable = true
-        dimensionLabel.isDisable = true
         dimensionTextField.isDisable = true
-        descriptionLabel.isDisable = true
         descriptionTextField.isDisable = true
-        unitLabel.isDisable = true
         unitTextField.isDisable = true
 
-        parentBox.prefHeight = saveButton.layoutY
-        parentBox.maxHeight = saveButton.layoutY
+        fillInMissingFields(item)
 
-        fillInFields(item)
-
-        saveButton.setOnAction { updateItem() }
-    }
-
-    private fun fillInFields(item: Item) {
-        nameTextField.text = item.name
-        dimensionTextField.text = item.dimension.toString()
-        descriptionTextField.text = item.description
-        amountTextField.text = item.amount.toString()
-        unitTextField.text = item.dimension.unit.toString()
-        pricePerUnitTextField.text = item.pricePerUnit.toString()
+        saveButton.setOnAction {
+            updateItem()
+            close()
+        }
     }
 
     private fun addItem() {
@@ -155,7 +134,6 @@ class ManageItemController {
                         amount = amountTextField.text.toInt(),
                         unit = unitTextField.text,
                         pricePerUnit = pricePerUnitTextField.text.toDouble())
-                close()
             } catch (e: UseCaseException) {
                 DialogUtil.showErrorDialog(ItemErrorCodeMapper.mapErrorCodeToMessage(e.errorCode))
             }
@@ -169,14 +147,20 @@ class ManageItemController {
                         id = idTextField.text.toInt(),
                         amount = amountTextField.text.toInt(),
                         pricePerUnit = pricePerUnitTextField.text.toDouble())
-                close()
             } catch (e: UseCaseException) {
                 DialogUtil.showErrorDialog(ItemErrorCodeMapper.mapErrorCodeToMessage(e.errorCode))
             }
         }
     }
 
-    private fun close() {
-        (cancelButton.scene.window as Stage).close()
+    private fun fillInMissingFields(item: Item) {
+        nameTextField.text = item.name
+        dimensionTextField.text = item.dimension.toString()
+        descriptionTextField.text = item.description
+        amountTextField.text = item.amount.toString()
+        unitTextField.text = item.dimension.unit.toString()
+        pricePerUnitTextField.text = item.pricePerUnit.toString()
     }
+
+    private fun close() = (cancelButton.scene.window as Stage).close()
 }

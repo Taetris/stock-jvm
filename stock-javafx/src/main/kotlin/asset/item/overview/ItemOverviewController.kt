@@ -1,10 +1,11 @@
 package asset.item.overview
 
+import application.ResourceLoader
 import application.StockApplication
 import application.executor.UI
 import application.usecase.UseCaseException
 import asset.item.error.ItemErrorCodeMapper
-import asset.item.manage.ManageItem
+import asset.item.manage.ManageItemController
 import asset.item.subject.ItemObserver
 import asset.item.subject.ItemSubject
 import asset.item.usecase.GetAllItemsUseCase
@@ -14,15 +15,13 @@ import javafx.beans.property.SimpleIntegerProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections
 import javafx.fxml.FXML
-import javafx.scene.control.Button
-import javafx.scene.control.Label
-import javafx.scene.control.TableColumn
-import javafx.scene.control.TableView
+import javafx.scene.control.*
 import javafx.stage.Stage
 import kotlinx.coroutines.experimental.launch
 import org.slf4j.LoggerFactory
 import repository.item.Item
 import view.dialog.DialogUtil
+import view.formatter.TextToIntFormatter
 import javax.inject.Inject
 
 class ItemOverviewController : ItemObserver {
@@ -32,6 +31,13 @@ class ItemOverviewController : ItemObserver {
     }
 
     private val logger = LoggerFactory.getLogger(ItemOverviewController::class.java)
+
+    @Inject
+    internal lateinit var getAllItemsUseCase: GetAllItemsUseCase
+    @Inject
+    internal lateinit var removeItemUseCase: RemoveItemUseCase
+    @Inject
+    internal lateinit var subject: ItemSubject
 
     @FXML
     private lateinit var itemsTable: TableView<Item>
@@ -58,18 +64,11 @@ class ItemOverviewController : ItemObserver {
     @FXML
     private lateinit var removeItemButton: Button
 
-    @Inject
-    internal lateinit var getAllItemsUseCase: GetAllItemsUseCase
-    @Inject
-    internal lateinit var removeItemUseCase: RemoveItemUseCase
-    @Inject
-    internal lateinit var subject: ItemSubject
-
     @FXML
     fun initialize() {
         logger.info("Initialize")
 
-        initializeListeners()
+        initializeControls()
         initializeTable()
 
         fetchItems()
@@ -79,22 +78,18 @@ class ItemOverviewController : ItemObserver {
         fetchItems()
     }
 
-    private fun initializeListeners() {
-        manageItemButton.setOnAction {
-            val stage = Stage()
-            val scene = ManageItem.createView()
-            if (scene != null) {
-                stage.scene = scene
-                stage.show()
-            }
-        }
-
+    private fun initializeControls() {
         removeItemButton.setOnAction {
             val selectedItem = itemsTable.selectionModel.selectedItem
             removeItem(selectedItem)
         }
+        manageItemButton.setOnAction {
+            val itemId = inputItemId()
+            navigateToItemManagement(itemId)
+        }
 
-        setButtonVisibility()
+        removeItemButton.isVisible = false
+        removeItemButton.visibleProperty().bind(itemsTable.selectionModel.selectedItemProperty().isNotNull)
 
         subject.register(this)
     }
@@ -109,18 +104,6 @@ class ItemOverviewController : ItemObserver {
         quantityColumn.setCellValueFactory { param -> SimpleDoubleProperty(param.value.calculateQuantity()) }
         pricePerUnitColumn.setCellValueFactory { param -> SimpleDoubleProperty(param.value.pricePerUnit) }
         totalPriceWithoutTaxColumn.setCellValueFactory { param -> SimpleDoubleProperty(param.value.calculateTotalPriceWithoutTax()) }
-    }
-
-    private fun setButtonVisibility() {
-        removeItemButton.isVisible = false
-
-        itemsTable.selectionModel.selectedItemProperty().addListener { _, _, newValue ->
-            newValue?.let {
-                removeItemButton.isVisible = true
-            } ?: run {
-                removeItemButton.isVisible = false
-            }
-        }
     }
 
     private fun fetchItems() {
@@ -144,5 +127,22 @@ class ItemOverviewController : ItemObserver {
                 DialogUtil.showErrorDialog(ItemErrorCodeMapper.mapErrorCodeToMessage(e.errorCode))
             }
         }
+    }
+
+    private fun inputItemId(): Int? {
+        val dialog = TextInputDialog()
+        dialog.headerText = ResourceLoader.bundle.getString("manageItemDialogHeader")
+        dialog.contentText = ResourceLoader.bundle.getString("manageItemDialogContent")
+        dialog.editor.textFormatter = TextToIntFormatter()
+
+        val result = dialog.showAndWait()
+        return result.get().toInt()
+    }
+
+    private fun navigateToItemManagement(itemId: Int?) {
+        val stage = Stage()
+        val scene = if (itemId == null) ManageItemController.create() else ManageItemController.create(itemId)
+        stage.scene = scene
+        stage.show()
     }
 }
