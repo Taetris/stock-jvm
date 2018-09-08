@@ -17,8 +17,8 @@ data class Item(val id: Int, val name: String, val dimension: Dimension,
         Validate.inclusiveBetween(0, Int.MAX_VALUE, id)
         Validate.notEmpty(name)
         Validate.notEmpty(description)
-        Validate.inclusiveBetween(1, Int.MAX_VALUE, amount)
-        Validate.inclusiveBetween(1.0, Double.MAX_VALUE, pricePerUnit)
+        Validate.inclusiveBetween(0, Int.MAX_VALUE, amount)
+        Validate.inclusiveBetween(0.0, Double.MAX_VALUE, pricePerUnit)
     }
 
     /**

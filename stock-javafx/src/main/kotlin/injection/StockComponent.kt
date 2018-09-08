@@ -8,6 +8,7 @@ import dagger.Component
 import invoice.items.overview.SelectedItemsOverviewController
 import invoice.items.select.SelectItemController
 import invoice.metadata.InvoiceMetadataController
+import menu.MenuController
 import javax.inject.Singleton
 
 @Singleton
@@ -27,4 +28,5 @@ interface StockComponent {
     fun inject(selectedItemsOverviewController: SelectedItemsOverviewController)
 
     fun inject(selectItemController: SelectItemController)
+    fun inject(menuController: MenuController)
 }
