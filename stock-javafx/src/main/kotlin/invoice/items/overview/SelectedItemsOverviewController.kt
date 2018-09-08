@@ -10,6 +10,7 @@ import asset.item.usecase.GetItemUseCase
 import invoice.items.select.SelectItemController
 import invoice.model.Invoice
 import invoice.usecase.GenerateInvoiceUseCase
+import invoice.usecase.UpdateItemsUseCase
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.beans.property.SimpleStringProperty
@@ -54,6 +55,8 @@ class SelectedItemsOverviewController {
     internal lateinit var getItemUseCase: GetItemUseCase
     @Inject
     internal lateinit var generateInvoiceUseCase: GenerateInvoiceUseCase
+    @Inject
+    internal lateinit var updateItemsUseCase: UpdateItemsUseCase
 
     @FXML
     private lateinit var selectedItemsTable: TableView<Item>
@@ -138,6 +141,7 @@ class SelectedItemsOverviewController {
         launch(UI) {
             try {
                 generateInvoiceUseCase.generateInvoice(invoice, file)
+                updateItemsUseCase.updateItems(invoice.selectedItems.toList())
                 close()
             } catch (e: UseCaseException) {
                 DialogUtil.showErrorDialog(ErrorCodeMapper().mapErrorCodeToMessage(e.errorCode))
@@ -169,6 +173,11 @@ class SelectedItemsOverviewController {
     }
 
     private fun navigateToSelect(item: Item) {
+        if (item.amount <= 0) {
+            DialogUtil.showErrorDialog("Roba sa ID-om '${item.id}' trenutno nije na stanju")
+            return
+        }
+
         val scene = SelectItemController.create(invoice, item)
         val stage = Stage()
         stage.scene = scene
