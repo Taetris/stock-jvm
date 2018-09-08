@@ -15,7 +15,7 @@ class ObservableItemRepositoryMock : ObservableItemRepository {
 
     private val logger = LoggerFactory.getLogger(ObservableItemRepositoryMock::class.java)
     private val items: MutableList<Item> = ArrayList()
-    private  val observers: MutableList<RepositoryObserver> = ArrayList()
+    private val observers: MutableList<RepositoryObserver> = ArrayList()
 
     init {
         items.add(Item(1, "name1", Dimension(1.0, 1.0, Unit.M2), "description1", 5, 23.0))
@@ -69,7 +69,8 @@ class ObservableItemRepositoryMock : ObservableItemRepository {
         }
 
         logger.info("Contains item with id '$id': $result")
-        return result    }
+        return result
+    }
 
     override fun getItemById(id: Int): Item {
         items.forEach { item ->
@@ -78,7 +79,8 @@ class ObservableItemRepositoryMock : ObservableItemRepository {
             }
         }
 
-        throw RepositoryException("No item found associated with the id '$id'.")    }
+        throw RepositoryException("No item found associated with the id '$id'.")
+    }
 
     override fun getAllItems(): List<Item> {
         return items

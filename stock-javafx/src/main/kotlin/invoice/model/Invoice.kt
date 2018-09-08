@@ -17,6 +17,6 @@ data class Invoice(val invoiceId: Int, val customer: Customer) {
         localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
     }
 
-    // TODO: Make private, add access methods
+    // TODO: Make private, add access methods, change to List interface
     val selectedItems: ObservableList<Item> = FXCollections.observableArrayList<Item>()
 }

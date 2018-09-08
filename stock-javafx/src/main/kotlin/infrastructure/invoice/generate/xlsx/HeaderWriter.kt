@@ -1,4 +1,4 @@
-package infrastructure.invoice.generate.xslx
+package infrastructure.invoice.generate.xlsx
 
 import application.ResourceLoader
 import invoice.model.Invoice

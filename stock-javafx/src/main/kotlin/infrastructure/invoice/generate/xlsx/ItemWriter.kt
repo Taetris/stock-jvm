@@ -1,7 +1,8 @@
-package infrastructure.invoice.generate.xslx
+package infrastructure.invoice.generate.xlsx
 
 import application.ResourceLoader
 import org.apache.poi.ss.usermodel.BorderStyle
+import org.apache.poi.ss.usermodel.HorizontalAlignment
 import org.apache.poi.xssf.usermodel.XSSFCellStyle
 import org.apache.poi.xssf.usermodel.XSSFSheet
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
@@ -12,30 +13,31 @@ class ItemWriter(private val workbook: XSSFWorkbook, private val sheet: XSSFShee
 
     companion object {
 
-        private const val NUMBER_OF_COLUMNS = 9
+        private const val NUMBER_OF_COLUMNS = 8
     }
 
     private val ID_COLUMN = beginColumn
-    private val NAME_COLUMN = beginColumn + 1
-    private val DIMENSION_COLUMN = beginColumn + 2
-    private val DESCRIPTION_COLUMN = beginColumn + 3
-    private val AMOUNT_COLUMN = beginColumn + 4
-    private val UNIT_COLUMN = beginColumn + 5
-    private val QUANTITY_COLUMN = beginColumn + 6
-    private val PRICE_PER_UNIT_COLUMN = beginColumn + 7
-    private val TOTAL_PRICE_WITHOUT_TAX_COLUMN = beginColumn + 8
+    private val NAME_COLUMN = beginColumn + NUMBER_OF_COLUMNS - 7
+    private val DIMENSION_COLUMN = beginColumn + NUMBER_OF_COLUMNS - 6
+    private val DESCRIPTION_COLUMN = beginColumn + NUMBER_OF_COLUMNS - 5
+    private val AMOUNT_COLUMN = beginColumn + NUMBER_OF_COLUMNS - 4
+    private val UNIT_COLUMN = beginColumn + NUMBER_OF_COLUMNS - 3
+    private val QUANTITY_COLUMN = beginColumn + NUMBER_OF_COLUMNS - 2
+    private val PRICE_PER_UNIT_COLUMN = beginColumn + NUMBER_OF_COLUMNS - 1
+    private val TOTAL_PRICE_WITHOUT_TAX_COLUMN = beginColumn + NUMBER_OF_COLUMNS
 
     private val cellStyle = createBorderCellStyle()
 
     fun writeItemHeader(currentRow: Int): Int {
         val row = sheet.createRow(currentRow)
 
-        for (i in beginColumn..(beginColumn + NUMBER_OF_COLUMNS - 1)) {
+        for (i in beginColumn..(beginColumn + NUMBER_OF_COLUMNS)) {
             print("$i")
 
             val cell = row.createCell(i)
             cell.cellStyle = cellStyle
             cell.setCellValue(getColumnNameForIndex(i))
+            sheet.autoSizeColumn(cell.columnIndex)
         }
 
         return currentRow + 1
@@ -44,10 +46,11 @@ class ItemWriter(private val workbook: XSSFWorkbook, private val sheet: XSSFShee
     fun writeItem(currentRow: Int, item: Item): Int {
         val row = sheet.createRow(currentRow)
 
-        for (i in beginColumn..(beginColumn + NUMBER_OF_COLUMNS - 1)) {
+        for (i in beginColumn..(beginColumn + NUMBER_OF_COLUMNS)) {
             val cell = row.createCell(i)
             cell.cellStyle = cellStyle
             cell.setCellValue(getColumnValueForIndex(i, item))
+            sheet.autoSizeColumn(cell.columnIndex)
         }
 
         return currentRow + 1
@@ -85,6 +88,7 @@ class ItemWriter(private val workbook: XSSFWorkbook, private val sheet: XSSFShee
 
     private fun createBorderCellStyle(): XSSFCellStyle {
         val cellStyle = workbook.createCellStyle()
+        cellStyle.setAlignment(HorizontalAlignment.CENTER)
         cellStyle.setBorderTop(BorderStyle.THIN)
         cellStyle.setBorderBottom(BorderStyle.THIN)
         cellStyle.setBorderLeft(BorderStyle.THIN)

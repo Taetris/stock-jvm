@@ -3,11 +3,13 @@ package invoice.items.overview
 import application.ResourceLoader
 import application.StockApplication
 import application.executor.UI
+import application.usecase.ErrorCodeMapper
 import application.usecase.UseCaseException
 import asset.item.error.ItemErrorCodeMapper
 import asset.item.usecase.GetItemUseCase
 import invoice.items.select.SelectItemController
 import invoice.model.Invoice
+import invoice.usecase.GenerateInvoiceUseCase
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.beans.property.SimpleStringProperty
@@ -18,12 +20,14 @@ import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.TextInputDialog
 import javafx.scene.layout.Pane
+import javafx.stage.FileChooser
 import javafx.stage.Stage
 import kotlinx.coroutines.experimental.launch
 import org.slf4j.LoggerFactory
 import repository.item.Item
 import view.dialog.DialogUtil
 import view.formatter.TextToIntFormatter
+import java.io.File
 import javax.inject.Inject
 
 
@@ -48,6 +52,8 @@ class SelectedItemsOverviewController {
 
     @Inject
     internal lateinit var getItemUseCase: GetItemUseCase
+    @Inject
+    internal lateinit var generateInvoiceUseCase: GenerateInvoiceUseCase
 
     @FXML
     private lateinit var selectedItemsTable: TableView<Item>
@@ -87,7 +93,12 @@ class SelectedItemsOverviewController {
     }
 
     private fun initializeControls() {
-        finishButton.setOnAction { close() }
+        finishButton.setOnAction {
+            val file = chooseFileToSave()
+            if (file != null) {
+                generateInvoice(file)
+            }
+        }
         removeItemButton.setOnAction {
             val selectedItem = selectedItemsTable.selectionModel.selectedItem
             removeSelectedItem(selectedItem)
@@ -113,6 +124,25 @@ class SelectedItemsOverviewController {
         totalPriceWithoutTaxColumn.setCellValueFactory { param -> SimpleDoubleProperty(param.value.calculateTotalPriceWithoutTax()) }
 
         selectedItemsTable.items = invoice.selectedItems
+    }
+
+    private fun chooseFileToSave(): File? {
+        val fileChooser = FileChooser()
+        val extension = FileChooser.ExtensionFilter("Excel files (*.xlsx)", "*.xlsx")
+        fileChooser.extensionFilters.addAll(extension)
+
+        return fileChooser.showSaveDialog(finishButton.scene.window as Stage)
+    }
+
+    private fun generateInvoice(file: File) {
+        launch(UI) {
+            try {
+                generateInvoiceUseCase.generateInvoice(invoice, file)
+                close()
+            } catch (e: UseCaseException) {
+                DialogUtil.showErrorDialog(ErrorCodeMapper().mapErrorCodeToMessage(e.errorCode))
+            }
+        }
     }
 
     private fun removeSelectedItem(selectedItem: Item) = invoice.selectedItems.remove(selectedItem)
